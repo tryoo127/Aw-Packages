@@ -50,7 +50,7 @@ wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubuserconte
 wget -q -O /usr/bin/speedtest "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/speedtest";chmod +x /usr/bin/speedtest
 
 clear
-echo -e "\e[1;37m[\e[0m \e[1;32mInstall TuneCPU\e[0m \e[1;37m]\e[0m"
+echo -e "\e[1;37m[\e[0m \e[1;32mInstall TuneCPU Modem\e[0m \e[1;37m]\e[0m"
 sleep 3
 
 clear
