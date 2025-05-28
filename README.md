@@ -1,4 +1,4 @@
-## ONELINER QWRT-CH
+## PACKAGE INSTALLATION
 COPY PASTE SCRIPT 1
 ```
 echo -e "nameserver 1.1.1.1" >/tmp/resolv.conf.d/resolv.conf.auto
