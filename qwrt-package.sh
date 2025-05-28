@@ -47,7 +47,6 @@ wget -q -O /usr/lib/lua/luci/view/rooter/custom.htm "https://raw.githubuserconte
 wget -q -O /usr/lib/lua/luci/view/rooter/net_status.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/net_status.htm";
 wget -q -O /usr/lib/lua/luci/view/rooter/sms.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/sms.htm";
 wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.htm";
-wget -q -O /usr/bin/speedtest "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/speedtest";chmod +x /usr/bin/speedtest
 
 clear
 echo -e "\e[1;37m[\e[0m \e[1;32mInstall TuneCPU Modem\e[0m \e[1;37m]\e[0m"
