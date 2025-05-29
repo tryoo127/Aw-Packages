@@ -8,14 +8,15 @@ echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts\e[0m \e[1;37m]\e[0m \e[1;37m
 sleep 2
 
 (
-    echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf
-) >/dev/null 2>&1
-    opkg update; opkg install luci-app-passwall htop haproxy
+    echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf >/dev/null 2>&1
+    opkg update >/dev/null 2>&1
+    opkg install luci-app-passwall htop haproxy >/dev/null 2>&1
     cd /tmp && \
     curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && \
     unzip -o Xray-linux-arm64-v8a.zip && \
     mv xray /usr/bin && \
     chmod +x /usr/bin/xray
+) >/dev/null 2>&1
 
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
