@@ -1,5 +1,5 @@
 #!/bin/sh
-WHITE='\e[0;37m'
+WHITE='\e[1;37m'
 GREEN='\e[1;32m'
 RED='\e[1;31m'
 NC='\e[0m' # No Color
