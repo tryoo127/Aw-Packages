@@ -1,10 +1,10 @@
 #!/bin/sh
 clear
-echo -e "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
+echo "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
 sleep 3
 
 clear
-echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
+echo "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
 sleep 3
 
 # Main installation block: redirects all output to /dev/null
@@ -63,7 +63,7 @@ fi
 
 clear
 rm -f /root/setup.sh
-echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+echo "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
 exit 0
