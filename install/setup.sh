@@ -1,13 +1,13 @@
 #!/bin/sh
 GREEN='\e[1;32m'
 RED='\e[1;31m'
-NC='\e[0m' # No Color
+NC='\e[0m'
 
 clear
 echo -e "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
 sleep 3
 
-# Function to check if a command was successful
+# Function command successful / failed
 check_command() {
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}  - ${1} successful.${NC}"
