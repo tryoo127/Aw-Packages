@@ -28,15 +28,17 @@ check_command() {
     fi
 }
 
-log_message "Installing luci-app-passwall. Please wait..."
 echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf >/dev/null 2>&1
 opkg update >/dev/null 2>&1
-opkg install luci-app-passwall htop haproxy >/dev/null 2>&1
+log_message "Installing Passwall. Please wait..."
+opkg install luci-app-passwall htop haproxy
 
 log_message "Installing Xray core. Please wait..."
     cd /tmp && \
     curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip && \
+    check_command "Xray download" && \
     unzip -o Xray-linux-arm64-v8a.zip >/dev/null 2>&1 && \
+    check_command "Xray unzip" && \
     mv xray /usr/bin/xray && \
     chmod +x /usr/bin/xray && \
 
