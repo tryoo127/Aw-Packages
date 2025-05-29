@@ -12,9 +12,10 @@ clear
 echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
 sleep 2
 
+clear
 # Function to display progress messages
 log_message() {
-    echo -e "${WHITE}[ ${1} ]${NC}"
+    echo -e "${WHITE} ${1} ${NC}"
 }
 
 # Function to check if a command was successful
@@ -36,13 +37,9 @@ log_message "Installing Xray core"
 (
     cd /tmp && \
     curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip && \
-    check_command "Xray download" && \
     unzip -o Xray-linux-arm64-v8a.zip >/dev/null 2>&1 && \
-    check_command "Xray unzip" && \
     mv xray /usr/bin/xray && \
-    check_command "Xray move to /usr/bin" && \
     chmod +x /usr/bin/xray && \
-    check_command "Xray executable permissions"
 )
 
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
