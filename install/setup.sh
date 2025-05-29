@@ -15,7 +15,7 @@ fun_bar() {
         touch $HOME/fim
     ) >/dev/null 2>&1 &
     tput civis
-    echo -ne "\e[1;37mPlease Wait\e[0m \e[1;37m[\e[0m"
+    echo -ne "\e[1;32mPlease Wait\e[0m \e[1;37m[\e[0m"
     while true; do
         for ((i = 0; i < 20; i++)); do
             echo -ne "\033[0;32m>"
@@ -26,7 +26,7 @@ fun_bar() {
         sleep 1s
         tput cuu1
         tput dl1
-        echo -ne "\e[1;37mPlease Wait\e[0m \e[1;37m[\e[0m"
+        echo -ne "\e[1;32mPlease Wait\e[0m \e[1;37m[\e[0m"
     done
     echo -e "\e[1;37m] -\e[0m \033[1;32mDone!\033[1;37m"
     tput cnorm
@@ -36,7 +36,7 @@ fun_bar() {
 sc1() {
     wget -q -O /usr/bin/nf https://raw.githubusercontent.com/vinstechmy/MediaUnlockerTest/main/media.sh && chmod +x /usr/bin/nf
 }
-echo -e "\e[1;32mDownloading Now\e[0m"
+echo -e "\e[1;37mDownloading Now\e[0m"
 fun_bar 'sc1'
 
 rm -f /root/setup.sh
