@@ -19,7 +19,7 @@ fun_bar() {
     while true; do
         for ((i = 0; i < 20; i++)); do
             echo -ne "\033[0;32m>"
-            sleep 0.3s
+            sleep 0.2s
         done
         [[ -e $HOME/fim ]] && rm $HOME/fim && break
         echo -e "\033[0;33m]"
@@ -33,12 +33,11 @@ fun_bar() {
     sleep 3s
 }
 
+echo -e "\e[1;37mDownloading\e[0m"
+fun_bar 'sc1'
 sc1() {
     wget -q -O /usr/bin/nf https://raw.githubusercontent.com/vinstechmy/MediaUnlockerTest/main/media.sh && chmod +x /usr/bin/nf
 }
-
-echo -e "\e[1;37mDownloading\e[0m"
-fun_bar 'sc1'
 
 rm -f /root/setup.sh
 clear
