@@ -17,9 +17,9 @@ fun_bar() {
     tput civis
     echo -ne "\e[1;32mPlease Wait\e[0m \e[1;37m[\e[0m"
     while true; do
-        for ((i = 0; i < 15; i++)); do
+        for ((i = 0; i < 20; i++)); do
             echo -ne "\033[0;32m>"
-            sleep 0.1s
+            sleep 1s
         done
         [[ -e $HOME/fim ]] && rm $HOME/fim && break
         echo -e "\033[0;33m]"
