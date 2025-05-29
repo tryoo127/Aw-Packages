@@ -19,7 +19,7 @@ fun_bar() {
     while true; do
         for ((i = 0; i < 20; i++)); do
             echo -ne "\033[0;32m>"
-            sleep 1s
+            sleep 0.3s
         done
         [[ -e $HOME/fim ]] && rm $HOME/fim && break
         echo -e "\033[0;33m]"
