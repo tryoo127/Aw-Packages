@@ -28,7 +28,7 @@ fun_bar() {
         tput dl1
         echo -ne "\e[1;37mPlease Wait\e[0m \e[1;37m[\e[0m"
     done
-    echo -e "\e[1;37m] -\e[0m \033[1;32m Done!\033[1;37m"
+    echo -e "\e[1;37m] -\e[0m \033[1;32mDone!\033[1;37m"
     tput cnorm
     sleep 3s
 }
