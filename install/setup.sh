@@ -1,21 +1,13 @@
 #!/bin/bash
 clear
-echo -ne "\e[0;37mAutoscript Oneliner QWRT By\e[0m \e[1;32mXoolVPN\e[0m"
+echo -e "\e[0;37mAutoscript Oneliner QWRT By\e[0m \e[1;32mXoolVPN\e[0m"
 sleep 3
 
 clear
 #!/bin/sh
 fun_bar() {
-    CMD[0]="$1"
-    CMD[1]="$2"
-    (
-        [[ -e $HOME/fim ]] && rm $HOME/fim
-        ${CMD[0]} -y >/dev/null 2>&1
-        ${CMD[1]} -y >/dev/null 2>&1
-        touch $HOME/fim
-    ) >/dev/null 2>&1 &
     tput civis
-    echo -ne "\e[1;32mPlease Wait\e[0m"
+    echo -e "\e[1;32mPlease Wait\e[0m"
     echo -e "\[1;32mDone!\e[0m"
     tput cnorm
     sleep 3s
@@ -29,7 +21,7 @@ fun_bar 'sc1'
 
 rm -f /root/setup.sh
 clear
-echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+echo -e "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
 exit 0
