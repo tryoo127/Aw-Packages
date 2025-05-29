@@ -1,5 +1,4 @@
 #!/bin/sh
-WHITE='\e[1;37m'
 GREEN='\e[1;32m'
 RED='\e[1;31m'
 NC='\e[0m' # No Color
@@ -7,16 +6,6 @@ NC='\e[0m' # No Color
 clear
 echo -e "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
 sleep 3
-
-clear
-echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
-sleep 2
-
-clear
-# Function to display progress messages
-log_message() {
-    echo -e "${WHITE} ${1} ${NC}"
-}
 
 # Function to check if a command was successful
 check_command() {
@@ -28,19 +17,17 @@ check_command() {
     fi
 }
 
-log_message "Installing Passwall. Please wait..."
+log_message "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
 echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf >/dev/null 2>&1
 opkg update >/dev/null 2>&1
 opkg install luci-app-passwall htop haproxy >/dev/null 2>&1
-
-log_message "Installing Xray core. Please wait..."
-    cd /tmp && \
-    curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip && \
-    check_command "Xray download" && \
-    unzip -o Xray-linux-arm64-v8a.zip >/dev/null 2>&1 && \
-    check_command "Xray unzip" && \
-    mv xray /usr/bin/xray && \
-    chmod +x /usr/bin/xray && \
+cd /tmp && \
+curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip && \
+check_command "Xray download" && \
+unzip -o Xray-linux-arm64-v8a.zip >/dev/null 2>&1 && \
+check_command "Xray unzip" && \
+mv xray /usr/bin/xray && \
+chmod +x /usr/bin/xray && \
 
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
