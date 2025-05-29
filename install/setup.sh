@@ -33,13 +33,12 @@ fun_bar() {
     sleep 3s
 }
 
-res1() {
+sc1() {
     wget -q -O /usr/bin/nf https://raw.githubusercontent.com/vinstechmy/MediaUnlockerTest/main/media.sh && chmod +x /usr/bin/nf
 }
 
 echo -e "\e[1;37mDownloading\e[0m"
-fun_bar 'res1'
-echo  ""
+fun_bar 'sc1'
 
 rm -f /root/setup.sh
 clear
