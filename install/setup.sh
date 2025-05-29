@@ -1,6 +1,6 @@
 #!/bin/sh
 clear
-echo -ne "\e[0;37mAutoscript Oneliner QWRT By\e[0m \e[1;32mXoolVPN\e[0m"
+echo -e "\e[0;37mAutoscript Oneliner QWRT By\e[0m \e[1;32mXoolVPN\e[0m"
 sleep 3
 
 clear
@@ -15,7 +15,7 @@ fun_bar() {
         touch $HOME/fim
     ) >/dev/null 2>&1 &
     tput civis
-    echo -ne "\e[1;32mPlease Wait\e[0m \e[1;37m[\e[0m"
+    echo -e "\e[1;32mPlease Wait\e[0m \e[1;37m[\e[0m"
     while true; do
         for ((i = 0; i < 15; i++)); do
             echo -ne "\033[0;32m>"
@@ -26,7 +26,7 @@ fun_bar() {
         sleep 1s
         tput cuu1
         tput dl1
-        echo -ne "\e[1;32mPlease Wait\e[0m \e[1;37m[\e[0m"
+        echo -e "\e[1;32mPlease Wait\e[0m \e[1;37m[\e[0m"
     done
     echo -e "\e[1;37m] -\e[0m \033[1;32mDone!\033[1;37m"
     tput cnorm
@@ -41,7 +41,7 @@ fun_bar 'sc1'
 
 rm -f /root/setup.sh
 clear
-echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+echo -e "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
 exit 0
