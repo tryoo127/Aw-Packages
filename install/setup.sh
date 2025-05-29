@@ -28,22 +28,19 @@ check_command() {
     fi
 }
 
-log_message "Installing luci-app-passwall"
+log_message "Installing luci-app-passwall. Please wait..."
 echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf >/dev/null 2>&1
 opkg update >/dev/null 2>&1
 opkg install luci-app-passwall htop haproxy >/dev/null 2>&1
 
-log_message "Installing Xray core"
+log_message "Installing Xray core. Please wait..."
     cd /tmp && \
     curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip && \
-    check_command "Xray download" && \
     unzip -o Xray-linux-arm64-v8a.zip >/dev/null 2>&1 && \
-    check_command "Xray unzip" && \
     mv xray /usr/bin/xray && \
-    check_command "Xray move to /usr/bin" && \
     chmod +x /usr/bin/xray && \
-    check_command "Xray executable permissions"
 
+clear
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
