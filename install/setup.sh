@@ -1,17 +1,15 @@
 #!/bin/sh
-
-# Set colors for better readability
 WHITE='\e[0;37m'
 GREEN='\e[1;32m'
 RED='\e[1;31m'
-NC='\e[0m' # No Color
+NC='\e[0m'
 
 clear
-echo -e "${WHITE}Autoscript Passwall QWRT By ${GREEN}@XoolVPN${NC}"
+echo -e "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
 sleep 3
 
 clear
-echo -e "${GREEN}[ Installation Starts Now... ]${NC}"
+echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
 sleep 2
 
 # Function to display progress messages
@@ -29,63 +27,47 @@ check_command() {
     fi
 }
 
-log_message "Adding custom OPKG feed..."
+log_message "Installing luci-app-passwall..."
 echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf >/dev/null 2>&1
-check_command "Adding feed"
-
-log_message "Updating package lists..."
 opkg update >/dev/null 2>&1
-check_command "Package list update"
-
-log_message "Installing luci-app-passwall, htop, and haproxy..."
 opkg install luci-app-passwall htop haproxy >/dev/null 2>&1
-check_command "Core packages installation"
 
-log_message "Downloading and installing Xray core (this may take a moment)..."
 (
     cd /tmp && \
     curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip && \
-    check_command "Xray download" && \
     unzip -o Xray-linux-arm64-v8a.zip >/dev/null 2>&1 && \
-    check_command "Xray unzip" && \
     mv xray /usr/bin/xray && \
-    check_command "Xray move to /usr/bin" && \
     chmod +x /usr/bin/xray && \
-    check_command "Xray executable permissions"
 )
 
-log_message "Creating Passwall folder..."
+clear
+echo -e "\e[1;37m[\e[0m \e[1;32mDownloading...Please Wait...\e[0m \e[1;37m]\e[0m"
+sleep 3
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
 log () {
-    # Using logger for system logs for better visibility and debugging
-    logger -t "Passwall_Hotplug" "$@"
+modlog "$@"
 }
 
-if [ "$ACTION" = "ifup" -a "$INTERFACE" = "wan" -a "$(uci -q get passwall.@global[0].enabled)" -eq 1 ]; then
-    log "WAN interface '$INTERFACE' came up. Waiting 10 seconds before restarting Passwall."
-    sleep 10
-    /etc/init.d/passwall restart
-    if [ $? -eq 0 ]; then
-        log "Successfully restarted Passwall."
-    else
-        log "Failed to restart Passwall. Check Passwall logs for details."
-    fi
+if [ "$ACTION" = "ifup" -a $INTERFACE = wan  -a $(uci -q get passwall.@global[0].enabled) -eq 1 ]; then
+sleep 10
+/etc/init.d/passwall restart
+if [ $? -eq 0 ]; then
+log "Restart Passwall"
+else
+log "failed to restart Passwall"
 fi
+fi
+done
 EOF
-check_command "Hotplug script creation"
-chmod +x /etc/hotplug.d/iface/99-passwall # Ensure hotplug script is executable
 
 clear
-rm -f /root/passwall.sh # Remove the script itself after successful execution
-echo -e "${GREEN}[ Successful! ]${NC} ${WHITE}Reboot Now? (y/n)? : ${NC}"
+rm -f /root/passwall.sh
+echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
-
-if [ "$answer" == "${answer#[Yy]}" ] ;then # Check if answer is NOT 'y' or 'Y'
-    echo -e "${WHITE}Reboot skipped. Please reboot manually later for changes to take full effect.${NC}"
-    exit 0
+if [ "$answer" == "${answer#[Yy]}" ] ;then
+exit 0
 else
-    echo -e "${GREEN}Rebooting now...${NC}"
-    reboot
+reboot
 fi
