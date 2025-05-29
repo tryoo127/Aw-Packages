@@ -1,9 +1,11 @@
 #!/bin/sh
 clear
 echo "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
-sleep 2
-echo "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
 sleep 3
+
+clear
+echo "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
+sleep 2
 
 # Main installation block: redirects all output to /dev/null
 (
