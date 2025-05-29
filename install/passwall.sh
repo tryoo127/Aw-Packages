@@ -1,6 +1,6 @@
 #!/bin/sh
-GREEN='\e[1;32m'
-RED='\e[1;31m'
+GR='\e[1;32m'
+RD='\e[1;31m'
 NC='\e[0m'
 
 clear
@@ -10,9 +10,9 @@ sleep 3
 # Function command successful / failed
 check_command() {
     if [ $? -eq 0 ]; then
-    echo -e "${WHITE} ${1}${NC} ${GREEN}successful${NC}"
+    echo -e "${WH} ${1}${NC} ${GR}successful${NC}"
     else
-    echo -e "${WHITE} ${1}${NC} ${RED}exiting${NC}"
+    echo -e "${WH} ${1}${NC} ${RD}exiting${NC}"
     exit 1
     fi
 }
