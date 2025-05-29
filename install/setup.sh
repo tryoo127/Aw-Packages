@@ -29,7 +29,7 @@ fun_bar() {
     done
     echo -e "\e[1;37m] -\e[0m \033[1;32m Done!\033[1;37m"
     tput cnorm
-    sleep 2s
+    sleep 3s
 }
 
 res1() {
