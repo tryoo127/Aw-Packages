@@ -36,7 +36,7 @@ res1() {
     wget -q -O /usr/bin/nf https://raw.githubusercontent.com/vinstechmy/MediaUnlockerTest/main/media.sh && chmod +x /usr/bin/nf
 }
 
-echo -e "\e[1;37mDownloading Passwall\e[0m"
+echo -e "\e[1;37mDownloading\e[0m"
 fun_bar 'res1'
 echo  ""
 
