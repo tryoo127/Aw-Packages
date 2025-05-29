@@ -17,7 +17,6 @@ sleep 2
     chmod +x /usr/bin/xray
 ) >/dev/null 2>&1
 
-clear
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
