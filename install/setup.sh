@@ -19,7 +19,8 @@ sleep 2
 ) >/dev/null 2>&1
 
 clear
-
+echo -e "\e[1;37m[\e[0m \e[1;32mFinishing Installation...\e[0m \e[1;37m]\e[0m"
+sleep 3
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
@@ -38,13 +39,6 @@ fi
 fi
 done
 EOF
-
-if [ $? -eq 0 ]; then
-echo "\033[1;32mPassWall hotplug configuration applied.\033[0m"
-else
-echo "\033[1;31mError: Failed to write hotplug configuration.\033[0m"
-exit 1
-fi
 
 clear
 rm -f /root/setup.sh
