@@ -12,7 +12,7 @@ check_command() {
     if [ $? -eq 0 ]; then
     echo -e "${WHITE} ${1}${NC} ${GREEN}successful${NC}"
     else
-    echo -e "${RED} ${1}${NC} ${GREEN}exiting${NC}"
+    echo -e "${WHITE} ${1}${NC} ${RED}exiting${NC}"
     exit 1
     fi
 }
