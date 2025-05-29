@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 clear
 echo -ne "\e[0;37mOneliner QWRT By\e[0m \e[1;32mXoolVPN\e[0m"
 sleep 3
