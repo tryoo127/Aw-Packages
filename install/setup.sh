@@ -28,9 +28,9 @@ check_command() {
     fi
 }
 
+log_message "Installing Passwall. Please wait..."
 echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf >/dev/null 2>&1
 opkg update >/dev/null 2>&1
-log_message "Installing Passwall. Please wait..."
 opkg install luci-app-passwall htop haproxy
 
 log_message "Installing Xray core. Please wait..."
