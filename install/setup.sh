@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-echo -ne "\e[0;37mOneliner QWRT Autoscript By\e[0m \e[1;32mXoolVPN\e[0m"
+echo -ne "\e[0;37mOneliner QWRT By\e[0m \e[1;32mXoolVPN\e[0m"
 sleep 3
 
 clear
