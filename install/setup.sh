@@ -1,7 +1,7 @@
 #!/bin/sh
 clear
 echo "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
-echo "\e[0;37mThis might take a moment...\e[0m
+echo "\e[0;37mThis might take a moment...\e[0m"
 sleep 3
 
 clear
