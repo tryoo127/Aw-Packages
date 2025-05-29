@@ -31,7 +31,7 @@ check_command() {
 log_message "Installing Passwall. Please wait..."
 echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf >/dev/null 2>&1
 opkg update >/dev/null 2>&1
-opkg install luci-app-passwall htop haproxy
+opkg install luci-app-passwall htop haproxy >/dev/null 2>&1
 
 log_message "Installing Xray core. Please wait..."
     cd /tmp && \
@@ -42,7 +42,6 @@ log_message "Installing Xray core. Please wait..."
     mv xray /usr/bin/xray && \
     chmod +x /usr/bin/xray && \
 
-clear
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
@@ -63,7 +62,8 @@ done
 EOF
 
 clear
-rm -f /root/setup.sh
+rm -f /root/passwall.sh
+sleep 2
 echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
