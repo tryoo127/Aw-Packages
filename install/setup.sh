@@ -4,6 +4,7 @@ echo -ne "\e[0;37mOneliner QWRT By\e[0m \e[1;32mXoolVPN\e[0m"
 sleep 3
 
 clear
+#!/bin/sh
 fun_bar() {
     CMD[0]="$1"
     CMD[1]="$2"
