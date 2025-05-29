@@ -4,10 +4,6 @@ echo -ne "\e[0;37mOneliner QWRT Autoscript By\e[0m \e[1;32mXoolVPN\e[0m"
 sleep 3
 
 clear
-echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now...\e[0m \e[1;37m]\e[0m"
-sleep 2
-
-clear
 fun_bar() {
     CMD[0]="$1"
     CMD[1]="$2"
