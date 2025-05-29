@@ -18,6 +18,8 @@ sleep 2
     chmod +x /usr/bin/xray
 ) >/dev/null 2>&1
 
+clear
+
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
@@ -36,6 +38,13 @@ fi
 fi
 done
 EOF
+
+if [ $? -eq 0 ]; then
+echo "\033[1;32mPassWall hotplug configuration applied.\033[0m"
+else
+echo "\033[1;31mError: Failed to write hotplug configuration.\033[0m"
+exit 1
+fi
 
 clear
 rm -f /root/setup.sh
