@@ -4,7 +4,7 @@ echo -e "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
 sleep 3
 
 clear
-echo -e "\e[1;37m[\e[0m \e[1;32mInstallation In Progress\e[0m \e[1;37m]\e[0m \e[1;37mPlease Wait...\e[0m"
+echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts\e[0m \e[1;37m]\e[0m \e[1;37mPlease Wait...\e[0m"
 sleep 2
 
 (
