@@ -10,9 +10,9 @@ sleep 3
 # Function command successful / failed
 check_command() {
     if [ $? -eq 0 ]; then
-    echo -e "${GREEN} ${1} successful${NC}"
+    echo -e "${WHITE} ${1}${NC} ${GREEN}successful${NC}"
     else
-    echo -e "${RED} ${1} exiting${NC}"
+    echo -e "${RED} ${1}${NC} ${GREEN}exiting${NC}"
     exit 1
     fi
 }
