@@ -7,7 +7,6 @@ clear
 echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts\e[0m \e[1;37m]\e[0m \e[1;37mThis might take a while...\e[0m"
 sleep 2
 
-clear
 (
     echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf >/dev/null 2>&1
     opkg update; opkg install luci-app-passwall htop haproxy
