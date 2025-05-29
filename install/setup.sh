@@ -1,10 +1,10 @@
 #!/bin/sh
 clear
-echo "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
+echo -e "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
 sleep 3
 
 clear
-echo "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now\e[0m \e[1;37m]\e[0m \e[1;37mThis might take a while...\e[0m"
+echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Starts Now\e[0m \e[1;37m]\e[0m \e[1;37mThis might take a while...\e[0m"
 sleep 2
 
 # Main installation block: redirects all output to /dev/null
@@ -28,9 +28,9 @@ sleep 2
 
 # Check if the main installation block exited successfully
 if [ $? -eq 0 ]; then
-    echo "\033[1;32mPackages and Xray core installed successfully.\033[0m"
+    echo -e "\033[1;32mPackages and Xray core installed successfully.\033[0m"
     else
-    echo "\033[1;31mError: Installation of packages or Xray failed. Check network or disk space.\033[0m"
+    echo -e "\033[1;31mError: Installation of packages or Xray failed. Check network or disk space.\033[0m"
     exit 1
 fi
 
@@ -63,7 +63,7 @@ fi
 
 clear
 rm -f /root/setup.sh
-echo "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
 exit 0
