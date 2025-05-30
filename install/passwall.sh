@@ -6,24 +6,16 @@ echo -e "\e[1;36m=============================================\e[0m"
 echo
 sleep 2
 
-# ---
-## Installation Steps
-
-echo -n -e "\e[1;37m[ ] Adding custom opkg feed...\e[0m"
+#Installation Starts
 (echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
-if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[✓] Adding custom opkg feed... Done!\e[0m"
-else
-    echo -e "\r\e[1;31m[✗] Adding custom opkg feed... Failed!\e[0m"
-fi
 sleep 1
 
-echo -n -e "\e[1;37m[ ] Updating opkg and installing Passwall components...\e[0m"
+echo -n -e "\e[1;37m[ ] Updating and installing Passwall service...\e[0m"
 (opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1)
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[✓] Updating opkg and installing Passwall components... Done!\e[0m"
+    echo -e "\r\e[1;32m[✓] Updating and installing Passwall service... Done!\e[0m"
 else
-    echo -e "\r\e[1;31m[✗] Updating opkg and installing Passwall components... Failed!\e[0m"
+    echo -e "\r\e[1;31m[✗] Updating and installing Passwall service... Failed!\e[0m"
 fi
 sleep 1
 
@@ -36,7 +28,7 @@ else
 fi
 sleep 1
 
-echo -n -e "\e[1;37m[ ] Creating hotplug script for Passwall...\e[0m"
+clear
 (cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
@@ -54,14 +46,6 @@ log "failed to restart Passwall"
 fi
 fi
 EOF
-)
-if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[✓] Creating hotplug script for Passwall... Done!\e[0m"
-else
-    echo -e "\r\e[1;31m[✗] Creating hotplug script for Passwall... Failed!\e[0m"
-fi
-sleep 1
-
 clear
 rm -f /root/passwall.sh
 
@@ -71,9 +55,9 @@ echo -e "\e[1;36m=============================================\e[0m"
 echo -ne "\e[0;37mReboot Now to apply changes? (y/n): \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
-    echo -e "\e[1;31mReboot skipped. Please reboot manually later for changes to take effect.\e[0m"
-    exit 0
+echo -e "\e[1;31mReboot skipped. Please Login QWRT web ui and refresh the page to take effect.\e[0m"
+exit 0
 else
-    echo -e "\e[1;32mRebooting system...\e[0m"
-    reboot
+echo -e "\e[1;32mRebooting system...\e[0m"
+reboot
 fi
