@@ -1,7 +1,7 @@
 #!/bin/sh
 clear
 echo -e "\e[1;36m=============================================\e[0m"
-echo -e "\e[1;37m     Autoscript Package QWRT By \e[1;32m@XoolVPN\e[0m"
+echo -e "\e[1;37m     Installer Package QWRT By \e[1;32m@XoolVPN\e[0m"
 echo -e "\e[1;36m=============================================\e[0m"
 sleep 2
 
@@ -72,8 +72,6 @@ execute_and_check "uci set turboacc.config.dns_caching='1'; uci set turboacc.con
 execute_and_check "uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq" "Set CPU to maximum frequency"
 uci set cpufreq.cpufreq.minifreq='2208000'; uci commit cpufreq.cpufreq
 uci set dhcp.lan.dhcp_option='6,1.1.1.1,1.0.0.1'; uci commit dhcp.lan
-
-echo
 echo -e "\e[1;37mPlease wait...\e[0m"
 sleep 3
 
