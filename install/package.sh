@@ -18,7 +18,7 @@ execute_and_check() {
     fi
 }
 
-execute_and_check "opkg update; opkg install htop; opkg install vsftpd" "- Update all packages first"
+execute_and_check "opkg update; opkg install htop; opkg install vsftpd" "- Update all packages. Please wait"
 
 execute_and_check "rm -f /etc/rc.local && cat > /etc/rc.local <<-'RCD'
 #!/bin/sh -e
