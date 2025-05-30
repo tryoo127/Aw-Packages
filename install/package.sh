@@ -32,16 +32,16 @@ iptables -t mangle -I PREROUTING -i wwan0_1 -j TTL --ttl-set 64
 iptables -t mangle -I PREROUTING -i br-lan -j TTL --ttl-set 64
 exit 0
 RCD
-chmod +x /etc/rc.local && /etc/rc.local enable && /etc/rc.local start && /etc/rc.local restart" "Setting up TTL modifications"
+chmod +x /etc/rc.local && /etc/rc.local enable && /etc/rc.local start && /etc/rc.local restart" "- Setting up TTL modifications"
 
 execute_and_check "uci set luci.main.lang='en'; uci commit" "Setting language to English"
-execute_and_check "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "Change timezone to Asia/Kuala Lumpur"
-execute_and_check "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "Configuring and restarting NTP service"
-execute_and_check "uci set network.wan.ifname='wwan0_1'; uci commit network.wan" "Setting WAN interface network"
-execute_and_check "uci set network.wan6.ifname='wwan0_1'; uci commit network.wan6" "Setting WAN6 interface network"
-execute_and_check "uci set turboacc.config.bbr_cca='1'; uci commit turboacc.config" "Set CPU modem performance"
-execute_and_check "uci set turboacc.config.dns_caching='1'; uci set turboacc.config.dns_caching_dns='1.1.1.1,1.0.0.1'; uci commit turboacc.config" "Set DNS & enable BBR CCA"
-execute_and_check "uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq" "Set CPU to maximum frequency"
+execute_and_check "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "- Change timezone to Asia/Kuala Lumpur"
+execute_and_check "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "- Configuring and restarting NTP service"
+execute_and_check "uci set network.wan.ifname='wwan0_1'; uci commit network.wan" "- Setting WAN interface network"
+execute_and_check "uci set network.wan6.ifname='wwan0_1'; uci commit network.wan6" "- Setting WAN6 interface network"
+execute_and_check "uci set turboacc.config.bbr_cca='1'; uci commit turboacc.config" "- Set CPU modem performance"
+execute_and_check "uci set turboacc.config.dns_caching='1'; uci set turboacc.config.dns_caching_dns='1.1.1.1,1.0.0.1'; uci commit turboacc.config" "- Set DNS & enable BBR CCA"
+execute_and_check "uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq" "- Set CPU to maximum frequency"
 uci set cpufreq.cpufreq.minifreq='2208000'; uci commit cpufreq.cpufreq
 uci set dhcp.lan.dhcp_option='6,1.1.1.1,1.0.0.1'; uci commit dhcp.lan
 echo -e "\e[1;37mPlease wait...\e[0m"
