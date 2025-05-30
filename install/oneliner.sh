@@ -63,7 +63,8 @@ wget -q -O /usr/lib/lua/luci/view/rooter/custom.htm "https://raw.githubuserconte
 wget -q -O /usr/lib/lua/luci/view/rooter/net_status.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/net_status.htm" &> /dev/null
 wget -q -O /usr/lib/lua/luci/view/rooter/sms.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/sms.htm" &> /dev/null
 wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.htm" &> /dev/null
-sleep 3
+echo
+sleep 5
 
 clear
 rm -f /root/oneliner.sh
