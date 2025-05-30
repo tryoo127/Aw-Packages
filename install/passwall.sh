@@ -1,7 +1,7 @@
 #!/bin/sh
 clear
 echo -e "\e[1;36m=============================================\e[0m"
-echo -e "\e[0;37m     Autoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
+echo -e "\e[1;37m     Autoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
 echo -e "\e[1;36m=============================================\e[0m"
 echo
 sleep 2
@@ -13,16 +13,16 @@ sleep 1
 echo -n -e "\e[1;37mDownloading and installing Passwall services...\e[0m"
 (opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1)
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32mDownloading and installing Passwall services... Done!\e[0m"
+    echo -e "\r\e[1;37mDownloading and installing Passwall services...\e[0m \e[1;32mDone!\e[0m"
 else
-    echo -e "\r\e[1;31mDownloading and installing Passwall services... Failed!\e[0m"
+    echo -e "\r\e[1;37mDownloading and installing Passwall services... Failed!\e[0m"
 fi
 sleep 1
 
 echo -n -e "\e[1;37mDownloading and installing Xray-core...\e[0m"
 (cd /tmp && curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip > /dev/null 2>&1 && unzip -o Xray-linux-arm64-v8a.zip > /dev/null && mv xray /usr/bin && chmod +x /usr/bin/xray)
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32mDownloading and installing Xray-core... Done!\e[0m"
+    echo -e "\r\e[1;37mDownloading and installing Xray-core...\e[0m \e[1;32mDone!\e[0m"
 else
     echo -e "\r\e[1;31mDownloading and installing Xray-core... Failed!\e[0m"
 fi
@@ -48,7 +48,7 @@ fi
 EOF
 )
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32mSet autostart Passwall services... Done!\e[0m"
+    echo -e "\r\e[1;37mSet autostart Passwall services...\e[0m \e[1;32mDone!\e[0m"
 else
     echo -e "\r\e[1;31mSet autostart Passwall services... Failed!\e[0m"
 fi
