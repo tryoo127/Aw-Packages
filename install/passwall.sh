@@ -13,18 +13,6 @@ fi
 
 # Update package lists silently with progress indication
 opkg update > /dev/null 2>&1 &
-OPKG_UPDATE_PID=$!
-while kill -0 "$OPKG_UPDATE_PID" 2>/dev/null; do
-    echo -n "."
-    sleep 1
-done
-echo " Done."
-
-# Check if opkg update was successful
-if [ $? -ne 0 ]; then
-    echo -e "\e[1;31mError: Failed to update package lists. Please check your internet connection.\e[0m"
-    exit 1
-fi
 
 # Install passwall and haproxy silently with progress indication
 echo -n "Installing passwall and haproxy: "
@@ -137,7 +125,7 @@ clear
 rm -f /root/passwall.sh
 ## Reboot Prompt
 
-echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mA reboot is recommended for changes to take full effect. Reboot now? (y/n)? : \e[0m"
+echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot now? (y/n)? : \e[0m"
 read -r answer # Use -r for read to prevent backslash interpretation
 
 if [[ "$answer" =~ ^[Yy]$ ]]; then
