@@ -3,6 +3,7 @@ clear
 echo -e "\e[1;36m=============================================\e[0m"
 echo -e "\e[1;37m     Installer Package QWRT By \e[1;32m@XoolVPN\e[0m"
 echo -e "\e[1;36m=============================================\e[0m"
+echo
 sleep 2
 
 execute_and_check() {
