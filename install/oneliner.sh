@@ -64,6 +64,7 @@ wget -q -O /usr/lib/lua/luci/view/rooter/net_status.htm "https://raw.githubuserc
 wget -q -O /usr/lib/lua/luci/view/rooter/sms.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/sms.htm" &> /dev/null
 wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.htm" &> /dev/null
 echo
+echo -e "\e[1;37mPlease wait...\e[0m"
 sleep 5
 
 clear
