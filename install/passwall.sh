@@ -10,12 +10,12 @@ sleep 2
 (echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
 sleep 1
 
-echo -n -e "\e[1;37m[ ] Updating and installing Passwall service...\e[0m"
+echo -n -e "\e[1;37m[ ] Downloading and installing Passwall service...\e[0m"
 (opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1)
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[✓] Updating and installing Passwall service... Done!\e[0m"
+    echo -e "\r\e[1;32m[✓] Downloading and installing Passwall service... Done!\e[0m"
 else
-    echo -e "\r\e[1;31m[✗] Updating and installing Passwall service... Failed!\e[0m"
+    echo -e "\r\e[1;31m[✗] Downloading and installing Passwall service... Failed!\e[0m"
 fi
 sleep 1
 
