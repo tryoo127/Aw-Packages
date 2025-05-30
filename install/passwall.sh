@@ -8,7 +8,6 @@ sleep 2
 
 #Installation Starts
 (echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
-sleep 1
 
 echo -n -e "\e[1;37mDownloading and installing Passwall services...\e[0m"
 (opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1)
