@@ -10,25 +10,25 @@ sleep 2
 (echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
 sleep 1
 
-echo -n -e "\e[1;37m[ ] Downloading and installing Passwall services...\e[0m"
+echo -n -e "\e[1;37mDownloading and installing Passwall services...\e[0m"
 (opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1)
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[?] Downloading and installing Passwall services... Done!\e[0m"
+    echo -e "\r\e[1;32mDownloading and installing Passwall services... Done!\e[0m"
 else
-    echo -e "\r\e[1;31m[?] Downloading and installing Passwall services... Failed!\e[0m"
+    echo -e "\r\e[1;31mDownloading and installing Passwall services... Failed!\e[0m"
 fi
 sleep 1
 
-echo -n -e "\e[1;37m[ ] Downloading and installing Xray-core...\e[0m"
+echo -n -e "\e[1;37mDownloading and installing Xray-core...\e[0m"
 (cd /tmp && curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip > /dev/null 2>&1 && unzip -o Xray-linux-arm64-v8a.zip > /dev/null && mv xray /usr/bin && chmod +x /usr/bin/xray)
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[?] Downloading and installing Xray-core... Done!\e[0m"
+    echo -e "\r\e[1;32mDownloading and installing Xray-core... Done!\e[0m"
 else
-    echo -e "\r\e[1;31m[?] Downloading and installing Xray-core... Failed!\e[0m"
+    echo -e "\r\e[1;31mDownloading and installing Xray-core... Failed!\e[0m"
 fi
 sleep 1
 
-echo -n -e "\e[1;37m[ ] Set autostart Passwall services...\e[0m"
+echo -n -e "\e[1;37mSet autostart Passwall services...\e[0m"
 (cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
@@ -48,18 +48,16 @@ fi
 EOF
 )
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[?] Set autostart Passwall services... Done!\e[0m"
+    echo -e "\r\e[1;32mSet autostart Passwall services... Done!\e[0m"
 else
-    echo -e "\r\e[1;31m[?] Set autostart Passwall services... Failed!\e[0m"
+    echo -e "\r\e[1;31mSet autostart Passwall services... Failed!\e[0m"
 fi
 sleep 3
 
 clear
 rm -f /root/passwall.sh
 
-echo -e "\n\e[1;36m=============================================\e[0m"
 echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
-echo -e "\e[1;36m=============================================\e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
     echo -e "\e[1;31mReboot skipped. Please Login QWRT web-ui and refresh the page.\e[0m"
