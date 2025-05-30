@@ -28,8 +28,8 @@ else
 fi
 sleep 1
 
-echo -n -e "\e[1;37m[ ] Creating hotplug script for Passwall...\e[0m"
-(cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
+clear
+cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
 log () {
@@ -45,14 +45,8 @@ else
 log "failed to restart Passwall"
 fi
 fi
+done
 EOF
-)
-if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[✓] Creating hotplug script for Passwall... Done!\e[0m"
-else
-    echo -e "\r\e[1;31m[✗] Creating hotplug script for Passwall... Failed!\e[0m"
-fi
-sleep 1
 
 clear
 rm -f /root/passwall.sh
