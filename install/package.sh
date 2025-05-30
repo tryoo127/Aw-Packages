@@ -18,9 +18,8 @@ execute_and_check() {
     fi
 }
 
-execute_and_check "opkg update; opkg install htop; opkg install vsftpd" "- Update all packages. Please wait"
-
-execute_and_check "rm -f /etc/rc.local && cat > /etc/rc.local <<-'RCD'
+rm -rf /etc/rc.local
+cat > /etc/rc.local <<-RCD
 #!/bin/sh -e
 
 iptables -t mangle -I POSTROUTING -o wwan0 -j TTL --ttl-set 64
@@ -35,8 +34,12 @@ iptables -t mangle -I PREROUTING -i wwan0_1 -j TTL --ttl-set 64
 iptables -t mangle -I PREROUTING -i br-lan -j TTL --ttl-set 64
 exit 0
 RCD
-chmod +x /etc/rc.local && /etc/rc.local enable && /etc/rc.local start && /etc/rc.local restart" "- Setting up TTL modifications"
+chmod +x /etc/rc.local
+/etc/rc.local enable
+/etc/rc.local start
+/etc/rc.local restart
 
+execute_and_check "opkg update; opkg install htop; opkg install vsftpd" "- Update all packages. Please wait"
 execute_and_check "uci set luci.main.lang='en'; uci commit" "- Setting language to English"
 execute_and_check "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "- Change timezone to Asia/Kuala Lumpur"
 execute_and_check "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "- Configuring and restarting NTP service"
@@ -63,8 +66,8 @@ wget -q -O /etc/hotplug.d/iface/82-irqbalance "https://raw.githubusercontent.com
 wget -q -O /etc/hotplug.d/net/97-smp-tune "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/97-smp-tune";
 sleep 3
 
-clear
 rm -f /root/package.sh
+echo
 echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[1;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
