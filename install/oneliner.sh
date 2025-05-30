@@ -14,7 +14,7 @@ execute_and_check() {
     # Run command in background and redirect output to /dev/null
     eval "$cmd" > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        echo -e "\r\e[1;32m$message...Done!\e[0m"
+        echo -e "\r\e[1;37m$message...\e[0m\e[1;32mDone!\e[0m"
     else
         echo -e "\r\e[1;31m$message...Failed!\e[0m"
     fi
@@ -51,7 +51,7 @@ execute_and_check "uci set network.wan.ifname='wwan0_1'; uci commit network.wan"
 execute_and_check "uci set network.wan6.ifname='wwan0_1'; uci commit network.wan6" "Setting WAN6 interface to wwan0_1"
 
 # Step 5: Download and update LuCI web interface files
-echo -e "\r\e[1;32mDownloading LuCI web interface files...Done!\e[0m"
+echo -e "\r\e[1;37mDownloading LuCI web interface files...\e[0m\e[1;32mDone!\e[0m"
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/customize.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/customize.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/profiles.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/profiles.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/controller/admin/modem.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modem.lua" &> /dev/null
