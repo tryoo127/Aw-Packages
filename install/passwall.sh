@@ -7,36 +7,36 @@ echo
 sleep 2
 
 # ---
-## Installation Progress
+## Installation Steps
 
-# Function to display a simple progress spinner
-spin_progress() {
-    local pid=$1
-    local delay=0.1
-    local spinstr="\\|/-"
-    local i=0
-    echo -n " "
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        i=$(( (i+1) % 4 ))
-        printf "\b\e[1;33m%c\e[0m" "${spinstr:$i:1}"
-        sleep "$delay"
-    done
-    printf "\b\e[1;32m✓\e[0m\n" # Checkmark on success
-}
-
-echo -e "\e[1;37m[1/4] Adding custom opkg feed...\e[0m"
-(echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1) & spin_progress $!
+echo -n -e "\e[1;37m[ ] Adding custom opkg feed...\e[0m"
+(echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
+if [ $? -eq 0 ]; then
+    echo -e "\r\e[1;32m[✓] Adding custom opkg feed... Done!\e[0m"
+else
+    echo -e "\r\e[1;31m[✗] Adding custom opkg feed... Failed!\e[0m"
+fi
 sleep 1
 
-echo -e "\e[1;37m[2/4] Updating opkg and installing Passwall components...\e[0m"
-(opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1) & spin_progress $!
+echo -n -e "\e[1;37m[ ] Updating opkg and installing Passwall components...\e[0m"
+(opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1)
+if [ $? -eq 0 ]; then
+    echo -e "\r\e[1;32m[✓] Updating opkg and installing Passwall components... Done!\e[0m"
+else
+    echo -e "\r\e[1;31m[✗] Updating opkg and installing Passwall components... Failed!\e[0m"
+fi
 sleep 1
 
-echo -e "\e[1;37m[3/4] Downloading and installing Xray-core...\e[0m"
-(cd /tmp && curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip > /dev/null 2>&1 && unzip -o Xray-linux-arm64-v8a.zip > /dev/null && mv xray /usr/bin && chmod +x /usr/bin/xray) & spin_progress $!
+echo -n -e "\e[1;37m[ ] Downloading and installing Xray-core...\e[0m"
+(cd /tmp && curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip > /dev/null 2>&1 && unzip -o Xray-linux-arm64-v8a.zip > /dev/null && mv xray /usr/bin && chmod +x /usr/bin/xray)
+if [ $? -eq 0 ]; then
+    echo -e "\r\e[1;32m[✓] Downloading and installing Xray-core... Done!\e[0m"
+else
+    echo -e "\r\e[1;31m[✗] Downloading and installing Xray-core... Failed!\e[0m"
+fi
 sleep 1
 
-echo -e "\e[1;37m[4/4] Creating hotplug script for Passwall...\e[0m"
+echo -n -e "\e[1;37m[ ] Creating hotplug script for Passwall...\e[0m"
 (cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
@@ -54,11 +54,17 @@ log "failed to restart Passwall"
 fi
 fi
 EOF
-) & spin_progress $!
+)
+if [ $? -eq 0 ]; then
+    echo -e "\r\e[1;32m[✓] Creating hotplug script for Passwall... Done!\e[0m"
+else
+    echo -e "\r\e[1;31m[✗] Creating hotplug script for Passwall... Failed!\e[0m"
+fi
 sleep 1
 
 clear
 rm -f /root/passwall.sh
+
 echo -e "\n\e[1;36m=============================================\e[0m"
 echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Successful!\e[0m \e[1;37m]\e[0m"
 echo -e "\e[1;36m=============================================\e[0m"
