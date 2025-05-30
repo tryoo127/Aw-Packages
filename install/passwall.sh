@@ -3,94 +3,32 @@ clear
 echo -e "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
 sleep 3
 
-clear
-# Add the custom feed if it's not already present
-if ! grep -q "custom_packages" /etc/opkg/customfeeds.conf; then
-echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null
-else
-echo "Installation folder already exists."
-fi
+# Function to display a spinning progress indicator
+spin_progress() {
+    local pid=$1
+    local delay=0.1
+    local spinstr="|"
+    echo -n " "
+    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+        local temp=${spinstr#?}
+        printf "\b%c" "$spinstr"
+        spinstr=$temp${spinstr%"$temp"}
+        sleep "$delay"
+    done
+    printf "\b \n"
+}
 
-# Install passwall and haproxy silently with progress indication
-echo -n "Installing passwall and haproxy"
-{ opkg update; opkg install luci-app-passwall haproxy; } > /dev/null 2>&1 &
-OPKG_INSTALL_PID=$!
-while kill -0 "$OPKG_INSTALL_PID" 2>/dev/null; do
-echo -n "."
-sleep 1
-done
-echo " Done."
+echo -n "Adding custom opkg feed..."
+(echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf) & spin_progress $!
 
-clear
-# Define the URL and destination
-XRAY_URL="https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip"
-XRAY_ZIP="Xray-linux-arm64-v8a.zip"
-INSTALL_DIR="/usr/bin"
-XRAY_EXECUTABLE="xray"
+echo -n "Updating opkg and installing Passwall components..."
+(opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1) & spin_progress $!
 
-# Create a temporary directory if it doesn't exist
-mkdir -p /tmp/xray_install
-cd /tmp/xray_install || { echo -e "\e[1;31mError: Failed to change to temporary directory.\e[0m"; exit 1; }
+echo -n "Downloading and installing Xray-core..."
+(cd /tmp && curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip 2>/dev/null && unzip -o *.zip > /dev/null && mv xray /usr/bin && chmod +x /usr/bin/xray) & spin_progress $!
 
-# Download Xray-core silently with progress
-echo -n "Downloading Xray Core 1.7.2.1"
-curl -L "$XRAY_URL" -o "$XRAY_ZIP" --progress-bar > /dev/null 2>&1 &
-CURL_PID=$!
-while kill -0 "$CURL_PID" 2>/dev/null; do
-echo -n "."
-sleep 1
-done
-echo " Done."
-
-# Check if download was successful
-if [ ! -f "$XRAY_ZIP" ] || [ ! -s "$XRAY_ZIP" ]; then
-echo -e "\e[1;31mError: Xray Core download failed or file is empty.\e[0m"
-rm -rf /tmp/xray_install # Clean up
-exit 1
-fi
-
-# Unzip the archive silently with progress
-echo -n "Unzipping Xray Core: "
-unzip -o "$XRAY_ZIP" > /dev/null 2>&1 &
-UNZIP_PID=$!
-while kill -0 "$UNZIP_PID" 2>/dev/null; do
-echo -n "."
-sleep 1
-done
-echo " Done."
-
-# Check if unzipping was successful and 'xray' executable exists
-if [ ! -f "./$XRAY_EXECUTABLE" ]; then
-echo -e "\e[1;31mError: Failed to unzip Xray Core or 'xray' executable not found.\e[0m"
-rm -rf /tmp/xray_install # Clean up
-exit 1
-fi
-
-# Move xray to destination and set permissions silently
-echo -n "Installing Xray Core to $INSTALL_DIR: "
-if mv "$XRAY_EXECUTABLE" "$INSTALL_DIR/" > /dev/null 2>&1; then
-echo -n "."
-if chmod +x "$INSTALL_DIR/$XRAY_EXECUTABLE" > /dev/null 2>&1; then
-echo -n "."
-echo " Done."
-echo -e "\e[1;32mXray Core installed successfully!\e[0m"
-else
-echo -e "\e[1;31mError: Failed to set executable permissions for Xray Core.\e[0m"
-rm -rf /tmp/xray_install # Clean up
-exit 1
-fi
-else
-echo -e "\e[1;31mError: Failed to move Xray Core to $INSTALL_DIR. Check permissions or if directory exists.\e[0m"
-rm -rf /tmp/xray_install # Clean up
-exit 1
-fi
-
-# Clean up temporary files
-echo "Cleaning up temporary files..."
-rm -rf /tmp/xray_install
-
-clear
-cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
+echo -n "Creating hotplug script for Passwall..."
+(cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
 log () {
@@ -106,20 +44,15 @@ else
 log "failed to restart Passwall"
 fi
 fi
-done
 EOF
+) & spin_progress $!
 
 clear
 rm -f /root/passwall.sh
-## Reboot Prompt
-
-echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot now? (y/n)? : \e[0m"
-read -r answer # Use -r for read to prevent backslash interpretation
-
-if [[ "$answer" =~ ^[Yy]$ ]]; then
-echo -e "\e[1;33mRebooting your device now...\e[0m"
-reboot
-else
-echo -e "\e[1;34mYou chose not to reboot. Login QWRT WEB UI and refresh the page.\e[0m"
+echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+read answer
+if [ "$answer" == "${answer#[Yy]}" ] ;then
 exit 0
+else
+reboot
 fi
