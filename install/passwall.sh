@@ -1,106 +1,36 @@
 #!/bin/sh
-clear
-echo -e "\e[0;37mAutoscript Passwall QWRT By\e[0m \e[1;32m@XoolVPN\e[0m"
-sleep 3
+GREEN="\e[1;32m"
+WHITE="\e[1;37m"
+YELLOW="\e[1;33m"
+CYAN="\e[1;36m"
+NC="\e[0m" # No Color
 
-clear
-# Add the custom feed if it's not already present
-if ! grep -q "custom_packages" /etc/opkg/customfeeds.conf; then
-echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null
-else
-echo "Installation folder already exists."
-fi
-
-# Install passwall and haproxy silently with progress indication
-echo -n "Installing passwall and haproxy"
-{ opkg update; opkg install luci-app-passwall haproxy; } > /dev/null 2>&1 &
-OPKG_INSTALL_PID=$!
-while kill -0 "$OPKG_INSTALL_PID" 2>/dev/null; do
-echo -n "."
-sleep 1
-done
-echo " Done."
-
-clear
-# Check if the installation was successful
-if [ $? -eq 0 ]; then
-echo -e "\e[1;32mPasswall QWRT installation successfully!\e[0m"
-else
-echo -e "\e[1;31mError: Installation failed. Please check your internet connection.\e[0m"
-exit 1
-fi
+# Initial welcome banner
+echo -e "${CYAN}-----------------------------------------------------${NC}"
+echo -e "${WHITE}  Autoscript Passwall QWRT By ${GREEN}@XoolVPN${NC}"
+echo -e "${CYAN}-----------------------------------------------------${NC}"
+echo ""
+echo -e "${YELLOW}Starting Passwall and Xray installation...${NC}"
 sleep 2
 
-clear
-# Define the URL and destination
-XRAY_URL="https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip"
-XRAY_ZIP="Xray-linux-arm64-v8a.zip"
-INSTALL_DIR="/usr/bin"
-XRAY_EXECUTABLE="xray"
+# Start a spinner or progress indicator while commands run silently
+(
+  # Add custom opkg feed
+  echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf
 
-# Create a temporary directory if it doesn't exist
-mkdir -p /tmp/xray_install
-cd /tmp/xray_install || { echo -e "\e[1;31mError: Failed to change to temporary directory.\e[0m"; exit 1; }
+  # Update opkg and install packages
+  opkg update
+  opkg install luci-app-passwall htop haproxy
 
-# Download Xray-core silently with progress
-echo -n "Downloading Xray Core 1.7.2.1"
-curl -L "$XRAY_URL" -o "$XRAY_ZIP" --progress-bar > /dev/null 2>&1 &
-CURL_PID=$!
-while kill -0 "$CURL_PID" 2>/dev/null; do
-echo -n "."
-sleep 1
-done
-echo " Done."
+  # Download, extract, and move Xray
+  cd /tmp
+  curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && \
+  unzip -o Xray-linux-arm64-v8a.zip && \
+  mv xray /usr/bin && \
+  chmod +x /usr/bin/xray
 
-# Check if download was successful
-if [ ! -f "$XRAY_ZIP" ] || [ ! -s "$XRAY_ZIP" ]; then
-echo -e "\e[1;31mError: Xray Core download failed or file is empty.\e[0m"
-rm -rf /tmp/xray_install # Clean up
-exit 1
-fi
-
-# Unzip the archive silently with progress
-echo -n "Unzipping Xray Core: "
-unzip -o "$XRAY_ZIP" > /dev/null 2>&1 &
-UNZIP_PID=$!
-while kill -0 "$UNZIP_PID" 2>/dev/null; do
-echo -n "."
-sleep 1
-done
-echo " Done."
-
-# Check if unzipping was successful and 'xray' executable exists
-if [ ! -f "./$XRAY_EXECUTABLE" ]; then
-echo -e "\e[1;31mError: Failed to unzip Xray Core or 'xray' executable not found.\e[0m"
-rm -rf /tmp/xray_install # Clean up
-exit 1
-fi
-
-# Move xray to destination and set permissions silently
-echo -n "Installing Xray Core to $INSTALL_DIR: "
-if mv "$XRAY_EXECUTABLE" "$INSTALL_DIR/" > /dev/null 2>&1; then
-echo -n "."
-if chmod +x "$INSTALL_DIR/$XRAY_EXECUTABLE" > /dev/null 2>&1; then
-echo -n "."
-echo " Done."
-echo -e "\e[1;32mXray Core installed successfully!\e[0m"
-else
-echo -e "\e[1;31mError: Failed to set executable permissions for Xray Core.\e[0m"
-rm -rf /tmp/xray_install # Clean up
-exit 1
-fi
-else
-echo -e "\e[1;31mError: Failed to move Xray Core to $INSTALL_DIR. Check permissions or if directory exists.\e[0m"
-rm -rf /tmp/xray_install # Clean up
-exit 1
-fi
-
-# Clean up temporary files
-echo "Cleaning up temporary files..."
-rm -rf /tmp/xray_install
-
-clear
-cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
+  # Create hotplug script for Passwall restart on WAN up
+  cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
 log () {
@@ -119,17 +49,36 @@ fi
 done
 EOF
 
+) > /dev/null 2>&1 & # Run the entire installation block in the background and suppress all its output
+
+# Display a progress indicator while the background process is running
+pid=$! # Get the PID of the background process
+i=1
+sp="/-\|"
+echo -n "${YELLOW}Working... ${NC}"
+while kill -0 $pid 2>/dev/null; do
+  printf "\b%c" "${sp:i++%${#sp}:1}"
+  sleep 0.1
+done
+echo -ne "\n" # Newline after spinner finishes
+
 clear
-rm -f /root/passwall.sh
-## Reboot Prompt
 
-echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot now? (y/n)? : \e[0m"
-read -r answer # Use -r for read to prevent backslash interpretation
+# Final success message and reboot prompt
+rm -f /root/passwall.sh # Remove the script itself
+echo -e "${CYAN}-----------------------------------------------------${NC}"
+echo -e "${WHITE}  Passwall and Xray Installation ${GREEN}COMPLETE!${NC}"
+echo -e "${CYAN}-----------------------------------------------------${NC}"
+echo ""
+echo -ne "${WHITE}  ${GREEN}[Successful!]${NC} ${WHITE}Reboot Now? (y/n)? : ${NC}"
+read answer
 
-if [[ "$answer" =~ ^[Yy]$ ]]; then
-echo -e "\e[1;33mRebooting your device now...\e[0m"
-reboot
+if [ "$answer" == "${answer#[Yy]}" ] ;then
+  echo -e "${YELLOW}  Exiting without reboot. Please reboot manually later.${NC}"
+  sleep 2
+  exit 0
 else
-echo -e "\e[1;34mYou chose not to reboot. Login QWRT WEB UI and refresh the page.\e[0m"
-exit 0
+  echo -e "${GREEN}  Rebooting router now...${NC}"
+  sleep 2
+  reboot
 fi
