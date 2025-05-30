@@ -34,7 +34,7 @@ exit 0
 RCD
 chmod +x /etc/rc.local && /etc/rc.local enable && /etc/rc.local start && /etc/rc.local restart" "- Setting up TTL modifications"
 
-execute_and_check "uci set luci.main.lang='en'; uci commit" "Setting language to English"
+execute_and_check "uci set luci.main.lang='en'; uci commit" "- Setting language to English"
 execute_and_check "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "- Change timezone to Asia/Kuala Lumpur"
 execute_and_check "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "- Configuring and restarting NTP service"
 execute_and_check "uci set network.wan.ifname='wwan0_1'; uci commit network.wan" "- Setting WAN interface network"
@@ -44,7 +44,7 @@ execute_and_check "uci set turboacc.config.dns_caching='1'; uci set turboacc.con
 execute_and_check "uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq" "- Set CPU to maximum frequency"
 uci set cpufreq.cpufreq.minifreq='2208000'; uci commit cpufreq.cpufreq
 uci set dhcp.lan.dhcp_option='6,1.1.1.1,1.0.0.1'; uci commit dhcp.lan
-echo -e "\e[1;37mPlease wait...\e[0m"
+echo -e "\e[1;37m   Please wait...\e[0m"
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/customize.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/customize.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/profiles.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/profiles.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/controller/admin/modem.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modem.lua" &> /dev/null
