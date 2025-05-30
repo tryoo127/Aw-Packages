@@ -10,13 +10,13 @@ sleep 2
 execute_and_check() {
     local cmd="$1"
     local message="$2"
-    echo -n -e "\e[1;37m[ ] $message...\e[0m"
+    echo -n -e "\e[1;37m$message...\e[0m"
     # Run command in background and redirect output to /dev/null
     eval "$cmd" > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        echo -e "\r\e[1;32m[✓] $message... Done!\e[0m"
+        echo -e "\r\e[1;32m$message...Done!\e[0m"
     else
-        echo -e "\r\e[1;31m[✗] $message... Failed!\e[0m"
+        echo -e "\r\e[1;31m$message...Failed!\e[0m"
     fi
 }
 
@@ -40,7 +40,7 @@ iptables -t mangle -I PREROUTING -i wwan0_1 -j TTL --ttl-set 64
 iptables -t mangle -I PREROUTING -i br-lan -j TTL --ttl-set 64
 exit 0
 RCD
-chmod +x /etc/rc.local && /etc/rc.local enable && /etc/rc.local start && /etc/rc.local restart" "Setting up TTL modifications in rc.local"
+chmod +x /etc/rc.local && /etc/rc.local enable && /etc/rc.local start && /etc/rc.local restart" "Setting up TTL modifications."
 
 # Step 2: Configure LuCI language and System Timezone
 execute_and_check "uci set luci.main.lang='en'; uci commit" "Setting LuCI language to English"
@@ -54,7 +54,7 @@ execute_and_check "uci set network.wan.ifname='wwan0_1'; uci commit network.wan"
 execute_and_check "uci set network.wan6.ifname='wwan0_1'; uci commit network.wan6" "Setting WAN6 interface to wwan0_1"
 
 # Step 5: Download and update LuCI web interface files
-echo -e "\e[1;37m[ ] Downloading LuCI web interface files...\e[0m"
+echo -e "\e[1;37mDownloading LuCI web interface files...\e[0m"
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/customize.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/customize.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/profiles.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/profiles.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/controller/admin/modem.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modem.lua" &> /dev/null
@@ -67,11 +67,11 @@ wget -q -O /usr/lib/lua/luci/view/rooter/net_status.htm "https://raw.githubuserc
 wget -q -O /usr/lib/lua/luci/view/rooter/sms.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/sms.htm" &> /dev/null
 wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.htm" &> /dev/null
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;32m[✓] Downloading LuCI web interface files... Done!\e[0m"
+    echo -e "\r\e[1;32mDownloading LuCI web interface files...Done!\e[0m"
 else
-    echo -e "\r\e[1;31m[✗] Downloading LuCI web interface files... Failed! (Check internet connection or source URL)\e[0m"
+    echo -e "\r\e[1;31mDownloading LuCI web interface files...Failed! (Check internet connection or source URL)\e[0m"
 fi
-sleep 1
+sleep 3
 
 # ---
 ## Finalization
