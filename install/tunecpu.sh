@@ -25,7 +25,7 @@ wget -q -O /etc/hotplug.d/iface/82-irqbalance "https://raw.githubusercontent.com
 wget -q -O /etc/hotplug.d/net/97-smp-tune "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/97-smp-tune";
 
 # Step 1: Configure /etc/rc.local for TTL settings
-execute_and_check "uci set turboacc.config.bbr_cca='1'; uci commit turboacc.config" "TuningCPU Modem starts now"
+execute_and_check "uci set turboacc.config.bbr_cca='1'; uci commit turboacc.config" "Tuning CPU Modem performance"
 execute_and_check "uci set turboacc.config.dns_caching='1'; uci set turboacc.config.dns_caching_dns='1.1.1.1,1.0.0.1'; uci commit turboacc.config" "Setting DNS & Enable BBR"
 execute_and_check "uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq" "Set CPU to maximum frequency"
 uci set cpufreq.cpufreq.minifreq='2208000'; uci commit cpufreq.cpufreq
