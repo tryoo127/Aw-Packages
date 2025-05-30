@@ -1,9 +1,8 @@
 #!/bin/sh
 clear
 echo -e "\e[1;36m=============================================\e[0m"
-echo -e "\e[1;37m     Installer Package QWRT By \e[1;32m@XoolVPN\e[0m"
+echo -e "\e[1;37m     Autoscript Package QWRT By \e[1;32m@XoolVPN\e[0m"
 echo -e "\e[1;36m=============================================\e[0m"
-echo
 sleep 2
 
 #Installation Starts
@@ -76,7 +75,7 @@ uci set dhcp.lan.dhcp_option='6,1.1.1.1,1.0.0.1'; uci commit dhcp.lan
 
 echo
 echo -e "\e[1;37mPlease wait...\e[0m"
-sleep 4
+sleep 3
 
 clear
 rm -f /root/package.sh
