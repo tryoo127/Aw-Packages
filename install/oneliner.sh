@@ -41,7 +41,7 @@ chmod +x /etc/rc.local && /etc/rc.local enable && /etc/rc.local start && /etc/rc
 
 # Step 2: Configure LuCI language and System Timezone
 execute_and_check "uci set luci.main.lang='en'; uci commit" "Setting language to English"
-execute_and_check "uci set system.@system[0].zonename='Asia/Kuala_Lumpur'; uci commit" "Setting system timezone to Asia/Kuala_Lumpur"
+execute_and_check "uci set system.@system[0].zonename='Asia/Kuala_Lumpur'; uci commit system" "Setting system timezone to Asia/Kuala_Lumpur"
 
 # Step 3: Configure NTP server
 execute_and_check "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "Configuring and restarting NTP with Cloudflare"
