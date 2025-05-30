@@ -33,7 +33,7 @@ uci set dhcp.lan.dhcp_option='6,1.1.1.1,1.0.0.1'; uci commit dhcp.lan
 
 echo
 echo -e "\e[1;37mPlease wait...\e[0m"
-sleep 3
+sleep 4
 
 clear
 rm -f /root/tunecpu.sh
