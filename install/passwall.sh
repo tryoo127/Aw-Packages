@@ -28,7 +28,7 @@ else
 fi
 sleep 1
 
-clear
+echo -n -e "\e[1;37m[ ] Creating hotplug script for Passwall...\e[0m"
 (cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
@@ -46,6 +46,14 @@ log "failed to restart Passwall"
 fi
 fi
 EOF
+)
+if [ $? -eq 0 ]; then
+    echo -e "\r\e[1;32m[✓] Creating hotplug script for Passwall... Done!\e[0m"
+else
+    echo -e "\r\e[1;31m[✗] Creating hotplug script for Passwall... Failed!\e[0m"
+fi
+sleep 1
+
 clear
 rm -f /root/passwall.sh
 
@@ -55,9 +63,9 @@ echo -e "\e[1;36m=============================================\e[0m"
 echo -ne "\e[0;37mReboot Now to apply changes? (y/n): \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
-echo -e "\e[1;31mReboot skipped. Please Login QWRT web ui and refresh the page to take effect.\e[0m"
-exit 0
+    echo -e "\e[1;31mReboot skipped. Please reboot manually later for changes to take effect.\e[0m"
+    exit 0
 else
-echo -e "\e[1;32mRebooting system...\e[0m"
-reboot
+    echo -e "\e[1;32mRebooting system...\e[0m"
+    reboot
 fi
