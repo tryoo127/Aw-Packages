@@ -1,7 +1,6 @@
 #!/bin/sh
 clear
-echo -e "\e[0;37mAutoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
-echo
+echo -e "\e[1;37mAutoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
 sleep 2
 
 #Installation Starts
@@ -50,18 +49,17 @@ if [ $? -eq 0 ]; then
 else
     echo -e "\r\e[1;31m[✗] Set autostart Passwall services... Failed!\e[0m"
 fi
-sleep 1
+sleep 3
 
 clear
 rm -f /root/passwall.sh
 
-echo -e "\e[1;37m[\e[0m \e[1;32mInstallation Successful!\e[0m \e[1;37m]\e[0m"
-echo -ne "\e[0;37mReboot Now? (y/n): \e[0m"
+echo -e "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n): \e[0m""
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
-    echo -e "\e[1;31mReboot skipped. Please Login QWRT web ui and refresh the page.\e[0m"
-    exit 0
+echo -e "\e[1;31mReboot skipped. Please Login QWRT web ui and refresh the page.\e[0m"
+exit 0
 else
-    echo -e "\e[1;32mRebooting...\e[0m"
-    reboot
+echo -e "\e[1;32mRebooting...\e[0m"
+reboot
 fi
