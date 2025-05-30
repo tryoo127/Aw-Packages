@@ -18,7 +18,6 @@ execute_and_check() {
     else
         echo -e "\r\e[1;31m[✗] $message... Failed!\e[0m"
     fi
-    sleep 0.5
 }
 
 # ---
