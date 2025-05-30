@@ -20,7 +20,6 @@ execute_and_check() {
     fi
 }
 
-clear
 # Step 1: Configure /etc/rc.local for TTL settings
 execute_and_check "rm -f /etc/rc.local && cat > /etc/rc.local <<-'RCD'
 #!/bin/sh -e
