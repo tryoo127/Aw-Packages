@@ -44,7 +44,6 @@ execute_and_check "uci set turboacc.config.dns_caching='1'; uci set turboacc.con
 execute_and_check "uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq" "- Set CPU to maximum frequency"
 uci set cpufreq.cpufreq.minifreq='2208000'; uci commit cpufreq.cpufreq
 uci set dhcp.lan.dhcp_option='6,1.1.1.1,1.0.0.1'; uci commit dhcp.lan
-echo -e "\e[1;37m   Please wait...\e[0m"
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/customize.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/customize.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/profiles.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/profiles.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/controller/admin/modem.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modem.lua" &> /dev/null
@@ -59,10 +58,11 @@ wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubuserconte
 wget -q -O /etc/config/rirq "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/rirq";
 wget -q -O /etc/hotplug.d/iface/82-irqbalance "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/82-irqbalance";
 wget -q -O /etc/hotplug.d/net/97-smp-tune "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/97-smp-tune";
+sleep 3
 
 clear
 rm -f /root/package.sh
-echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[1;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
     echo -e "\e[1;31mReboot skipped. Please reboot manually for changes to take effect.\e[0m"
