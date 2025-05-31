@@ -68,7 +68,7 @@ sleep 3
 
 rm -f /root/package.sh
 echo
-echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[1;37mReboot Now? (y/n)? : \e[0m"
+echo -ne "\e[1;32mSuccessful!\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
     echo -e "\e[1;31mReboot skipped. Please reboot manually for changes to take effect.\e[0m"
