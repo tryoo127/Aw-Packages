@@ -6,13 +6,11 @@ echo -e "\e[1;36m=============================================\e[0m"
 echo
 sleep 2
 
-#Installation Starts
 (echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
-
 echo -n -e "\e[1;37m- Installing Passwall services. Please wait\e[0m"
 (opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1)
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;37m- Installing Passwall services...\e[0m\e[1;32mDone!\e[0m"
+    echo -e "\r\e[1;37m- Installing Passwall services. Please wait...\e[0m\e[1;32mDone!\e[0m"
 else
     echo -e "\r\e[1;37m- Installing Passwall services... Failed!\e[0m"
 fi
@@ -21,7 +19,7 @@ sleep 1
 echo -n -e "\e[1;37m- Installing Xray-core. Please wait\e[0m"
 (cd /tmp && curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip > /dev/null 2>&1 && unzip -o Xray-linux-arm64-v8a.zip > /dev/null && mv xray /usr/bin && chmod +x /usr/bin/xray)
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;37m- Installing Xray-core...\e[0m\e[1;32mDone!\e[0m"
+    echo -e "\r\e[1;37m- Installing Xray-core. Please wait...\e[0m\e[1;32mDone!\e[0m"
 else
     echo -e "\r\e[1;31m- Installing Xray-core... Failed!\e[0m"
 fi
@@ -58,7 +56,7 @@ echo
 echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
-    echo -e "\e[1;31mReboot skipped. Please Login QWRT web-ui and refresh the page.\e[0m"
+    echo -e "\e[1;31mReboot skipped. Please Login QWRT web-ui and reload the page.\e[0m"
     exit 0
 else
     echo -e "\e[1;32mRebooting...\e[0m"
