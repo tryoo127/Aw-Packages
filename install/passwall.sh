@@ -6,29 +6,24 @@ echo -e "\e[1;36m=============================================\e[0m"
 echo
 sleep 2
 
+execute_and_check() {
+    local cmd="$1"
+    local message="$2"
+    echo -n -e "\e[1;37m$message...\e[0m"
+    eval "$cmd" > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo -e "\r\e[1;37m$message...\e[0m\e[1;32mDone!\e[0m"
+    else
+        echo -e "\r\e[1;31m$message...Failed!\e[0m"
+    fi
+}
+
 #Installation Starts
-(echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
+execute_and_check "echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf" "- Update all packages. Please wait"
+execute_and_check "opkg update; opkg install luci-app-passwall haproxy" "- Installing passwall service"
+execute_and_check "cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "- Installing Xray core"
 
-echo -n -e "\e[1;37mInstalling Passwall services...\e[0m"
-(opkg update > /dev/null 2>&1 && opkg install luci-app-passwall haproxy > /dev/null 2>&1)
-if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;37mInstalling Passwall services...\e[0m\e[1;32mDone!\e[0m"
-else
-    echo -e "\r\e[1;37mInstalling Passwall services... Failed!\e[0m"
-fi
-sleep 1
-
-echo -n -e "\e[1;37mInstalling Xray-core...\e[0m"
-(cd /tmp && curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip -o Xray-linux-arm64-v8a.zip > /dev/null 2>&1 && unzip -o Xray-linux-arm64-v8a.zip > /dev/null && mv xray /usr/bin && chmod +x /usr/bin/xray)
-if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;37mInstalling Xray-core...\e[0m\e[1;32mDone!\e[0m"
-else
-    echo -e "\r\e[1;31mInstalling Xray-core... Failed!\e[0m"
-fi
-sleep 1
-
-echo -n -e "\e[1;37mSet autostart Passwall services...\e[0m"
-(cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
+cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
 log () {
@@ -44,19 +39,12 @@ else
 log "failed to restart Passwall"
 fi
 fi
+done
 EOF
-)
-if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;37mSet autostart Passwall services...\e[0m\e[1;32mDone!\e[0m"
-else
-    echo -e "\r\e[1;31mSet autostart Passwall services... Failed!\e[0m"
-fi
-echo
 sleep 3
 
-
-clear
 rm -f /root/passwall.sh
+echo
 echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
