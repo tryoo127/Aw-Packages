@@ -25,7 +25,7 @@ else
 fi
 sleep 1
 
-echo -n -e "\e[1;37mSet autostart Passwall services...\e[0m"
+echo -n -e "\e[1;37m- Set autostart Passwall services...\e[0m"
 (cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
 
@@ -45,9 +45,9 @@ fi
 EOF
 )
 if [ $? -eq 0 ]; then
-    echo -e "\r\e[1;37mSet autostart Passwall services...\e[0m\e[1;32mDone!\e[0m"
+    echo -e "\r\e[1;37m- Set autostart Passwall services...\e[0m\e[1;32mDone!\e[0m"
 else
-    echo -e "\r\e[1;31mSet autostart Passwall services... Failed!\e[0m"
+    echo -e "\r\e[1;31m- Set autostart Passwall services... Failed!\e[0m"
 fi
 sleep 3
 
