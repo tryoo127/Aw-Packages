@@ -40,11 +40,11 @@ chmod +x /etc/rc.local
 /etc/rc.local restart
 
 execute_and_check "opkg update; opkg install htop; opkg install vsftpd" "- Update all packages. Please wait"
-execute_and_check "uci set luci.main.lang='en'; uci commit" "Setting language to English"
-execute_and_check "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "Setting system timezone to Asia/Kuala Lumpur"
-execute_and_check "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "Configuring and restarting NTP service"
-execute_and_check "uci set network.wan.ifname='wwan0_1'; uci commit network.wan" "Setting WAN interface network"
-execute_and_check "uci set network.wan6.ifname='wwan0_1'; uci commit network.wan6" "Setting WAN6 interface network"
+execute_and_check "uci set luci.main.lang='en'; uci commit" "- Setting language to English"
+execute_and_check "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "- Set timezone to Asia/Kuala Lumpur"
+execute_and_check "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "- Configuring and restarting NTP service"
+execute_and_check "uci set network.wan.ifname='wwan0_1'; uci commit network.wan" "- Setting WAN interface network"
+execute_and_check "uci set network.wan6.ifname='wwan0_1'; uci commit network.wan6" "- Setting WAN6 interface network"
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/customize.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/customize.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/model/cbi/rooter/profiles.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/profiles.lua" &> /dev/null
 wget -q -O /usr/lib/lua/luci/controller/admin/modem.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modem.lua" &> /dev/null
