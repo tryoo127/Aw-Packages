@@ -63,7 +63,6 @@ wget -q -O /usr/lib/lua/luci/view/rooter/sms.htm "https://raw.githubusercontent.
 wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.htm" &> /dev/null
 wget -q -O /etc/config/rirq "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/rirq";
 wget -q -O /etc/hotplug.d/iface/82-irqbalance "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/82-irqbalance";
-wget -q -O /etc/hotplug.d/net/97-smp-tune "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/97-smp-tune";
 sleep 3
 
 rm -f /root/package.sh
