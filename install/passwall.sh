@@ -1,18 +1,18 @@
 #!/bin/sh
 clear
-echo -e "\e[1;36m=============================================\e[0m"
-echo -e "\e[1;37m     Autoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
-echo -e "\e[1;36m=============================================\e[0m"
+echo -e "\e[1;36m==================================\e[0m"
+echo -e "\e[1;37mAutoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
+echo -e "\e[1;36m==================================\e[0m"
 echo
 sleep 2
 
 execute_and_check() {
     local cmd="$1"
     local message="$2"
-    echo -n -e "\e[1;37m$message...\e[0m"
+    echo -n -e "\e[0;37m$message...\e[0m"
     eval "$cmd" > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        echo -e "\r\e[1;37m$message...\e[0m\e[1;32mDone!\e[0m"
+        echo -e "\r\e[0;37m$message...\e[0m\e[1;32mDone!\e[0m"
     else
         echo -e "\r\e[1;31m$message...Failed!\e[0m"
     fi
