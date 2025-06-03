@@ -1,0 +1,56 @@
+#!/bin/sh
+clear
+echo -e "\e[1;36m=============================================\e[0m"
+echo -e "\e[1;37m     Autoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
+echo -e "\e[1;36m=============================================\e[0m"
+echo
+sleep 2
+
+execute_and_check() {
+    local cmd="$1"
+    local message="$2"
+    echo -n -e "\e[1;37m$message...\e[0m"
+    eval "$cmd" > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo -e "\r\e[1;37m$message...\e[0m\e[1;32mDone!\e[0m"
+    else
+        echo -e "\r\e[1;31m$message...Failed!\e[0m"
+    fi
+}
+
+(echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
+execute_and_check "opkg update; opkg install luci-app-passwall haproxy" "- Installing Passwall Service. Please wait"
+execute_and_check "cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "- Installing Xray-core. Please wait"
+execute_and_check "uci commit" "- Set autostart Passwall services..."
+
+cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
+#!/bin/sh
+
+log () {
+ modlog "$@"
+}
+
+if [ "$ACTION" = "ifup" -a $INTERFACE = wan  -a $(uci -q get passwall.@global[0].enabled) -eq 1 ]; then
+ sleep 10
+ /etc/init.d/passwall restart
+ if [ $? -eq 0 ]; then
+  log "Restart Passwall"
+ else
+  log "failed to restart Passwall"
+ fi
+fi
+done
+EOF
+sleep 3
+
+rm -f /root/*
+echo
+echo -ne "\e[1;32mSuccessful!\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+read answer
+if [ "$answer" == "${answer#[Yy]}" ] ;then
+    echo -e "\e[1;31mReboot skipped. Please Login QWRT web-ui and reload the page.\e[0m"
+    exit 0
+else
+    echo -e "\e[1;32mRebooting...\e[0m"
+    reboot
+fi
