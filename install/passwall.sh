@@ -1,8 +1,8 @@
 #!/bin/sh
 clear
-echo -e "\e[1;36m=====================================\e[0m"
+echo -e "\e[1;36m======================================\e[0m"
 echo -e "\e[1;37m Autoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
-echo -e "\e[1;36m=====================================\e[0m"
+echo -e "\e[1;36m======================================\e[0m"
 echo
 sleep 2
 
@@ -19,9 +19,9 @@ execute_and_check() {
 }
 
 (echo "src/gz custom_packages https://github.com/NevermoreSSH/openwrt-packages2/releases/download/arca_presetv2" | tee -a /etc/opkg/customfeeds.conf > /dev/null 2>&1)
-execute_and_check "opkg update; opkg install luci-app-passwall haproxy" "- Installing Passwall Service. Please wait"
-execute_and_check "cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "- Installing Xray-core. Please wait"
-execute_and_check "uci commit" "- Set autostart Passwall services..."
+execute_and_check "opkg update; opkg install luci-app-passwall haproxy" "- Installing Passwall. Please wait"
+execute_and_check "cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "- Installing Xray. Please wait"
+execute_and_check "uci commit" "- Set autostart Passwall"
 
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
