@@ -1,7 +1,7 @@
 #!/bin/sh
 clear
 echo -e "\e[1;36m======================================\e[0m"
-echo -e "\e[1;37m Passwall Installer QWRT By \e[1;32m@XoolVPN\e[0m"
+echo -e "\e[1;37m Autoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
 echo -e "\e[1;36m======================================\e[0m"
 echo
 sleep 2
@@ -43,7 +43,7 @@ done
 EOF
 sleep 3
 
-rm -f /root/*
+rm -f /root/passwall
 echo
 echo -ne "\e[1;32mSuccessful!\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
