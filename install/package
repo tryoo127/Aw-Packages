@@ -46,7 +46,6 @@ execute_install "uci -q delete system.ntp.server; uci add_list system.ntp.server
 execute_install "uci set network.wan.ifname='wwan0_1'; uci commit network.wan" "Set WAN interface network"
 execute_install "uci set network.wan6.ifname='wwan0_1'; uci commit network.wan6" "Set WAN6 interface network"
 execute_install "uci set turboacc.config.bbr_cca='1'; uci commit turboacc.config" "Set CPU modem performance"
-execute_install "uci set turboacc.config.dns_caching='1'; uci set turboacc.config.dns_caching_dns='1.1.1.1,1.0.0.1'; uci commit turboacc.config" "Set DNS & enable BBR CCA"
 uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq
 uci set cpufreq.cpufreq.minifreq='2208000'; uci commit cpufreq.cpufreq
 uci set dhcp.lan.dhcp_option='6,1.1.1.1,1.0.0.1'; uci commit dhcp.lan
