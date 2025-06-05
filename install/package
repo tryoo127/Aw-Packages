@@ -9,10 +9,10 @@ sleep 2
 execute_install() {
     local cmd="$1"
     local message="$2"
-    echo -n -e "\e[1;37m$message...\e[0m"
+    echo -n -e "\e[0;37m$message...\e[0m"
     eval "$cmd" > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        echo -e "\r\e[1;37m$message...\e[0m\e[1;32mDone!\e[0m"
+        echo -e "\r\e[0;37m$message...\e[0m\e[1;32mDone!\e[0m"
     else
         echo -e "\r\e[1;31m$message...Failed!\e[0m"
     fi
@@ -42,7 +42,7 @@ chmod +x /etc/rc.local
 execute_install "opkg update; opkg install htop; opkg install vsftpd" "Update all packages. Please wait"
 execute_install "uci set luci.main.lang='en'; uci commit" "Set Web-ui language to English"
 execute_install "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "Change timezone to Asia/Kuala Lumpur"
-execute_install "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "Fix TTL setting"
+execute_install "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "Fix TTL modem setting"
 execute_install "uci set network.wan.ifname='wwan0_1'; uci commit network.wan" "Set WAN interface network"
 execute_install "uci set network.wan6.ifname='wwan0_1'; uci commit network.wan6" "Set WAN6 interface network"
 execute_install "uci set turboacc.config.bbr_cca='1'; uci commit turboacc.config" "Set CPU modem performance"
