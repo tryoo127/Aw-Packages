@@ -6,6 +6,9 @@ echo -e "\e[1;36m======================================\e[0m"
 echo
 sleep 2
 
+sed -i '/done/iiptables -t mangle -I POSTROUTING -o wwan0 -j TTL --ttl-set 64\niptables -t mangle -I POSTROUTING -o br-lan -j TTL --ttl-set 64\niptables -t mangle -I PREROUTING -i wwan0 -j TTL --ttl-set 64\niptables -t mangle -I PREROUTING -i br-lan -j TTL --ttl-set 64\niptables -t mangle -A POSTROUTING -j TTL --ttl-set 64\niptables -t mangle -A PREROUTING -j TTL --ttl-set 64' /etc/hotplug.d/iface/19-rooter
+sed -i '/done/iiptables -t mangle -I POSTROUTING -o wwan0_1 -j TTL --ttl-set 64\niptables -t mangle -I POSTROUTING -o br-lan -j TTL --ttl-set 64\niptables -t mangle -I PREROUTING -i wwan0_1 -j TTL --ttl-set 64\niptables -t mangle -I PREROUTING -i br-lan -j TTL --ttl-set 64' /etc/hotplug.d/iface/19-rooter
+
 execute_install() {
     local cmd="$1"
     local message="$2"
@@ -18,7 +21,6 @@ execute_install() {
     fi
 }
 
-sed -i '/done/iiptables -t mangle -I POSTROUTING -o wwan0 -j TTL --ttl-set 64\niptables -t mangle -I POSTROUTING -o br-lan -j TTL --ttl-set 64\niptables -t mangle -I PREROUTING -i wwan0 -j TTL --ttl-set 64\niptables -t mangle -I PREROUTING -i br-lan -j TTL --ttl-set 64\niptables -t mangle -A POSTROUTING -j TTL --ttl-set 64\niptables -t mangle -A PREROUTING -j TTL --ttl-set 64' /etc/hotplug.d/iface/19-rooter; sed -i '/done/iiptables -t mangle -I POSTROUTING -o wwan0_1 -j TTL --ttl-set 64\niptables -t mangle -I POSTROUTING -o br-lan -j TTL --ttl-set 64\niptables -t mangle -I PREROUTING -i wwan0_1 -j TTL --ttl-set 64\niptables -t mangle -I PREROUTING -i br-lan -j TTL --ttl-set 64' /etc/hotplug.d/iface/19-rooter
 execute_install "opkg update; opkg install htop; opkg install vsftpd" "Update all packages. Please wait"
 execute_install "uci set luci.main.lang='en'; uci commit" "Setting language to English"
 execute_install "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "Set timezone to Asia/Kuala Lumpur"
