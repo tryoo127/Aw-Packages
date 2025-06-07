@@ -22,13 +22,12 @@ wget -q -O /etc/config/rirq "https://raw.githubusercontent.com/tryoo127/Aw-Packa
 wget -q -O /etc/hotplug.d/iface/82-irqbalance "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/82-irqbalance";
 wget -q -O /etc/hotplug.d/net/97-smp-tune "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/97-smp-tune";
 execute_and_check "uci set turboacc.config.bbr_cca='1'; uci commit turboacc.config" "Tuning CPU Modem performance"
-execute_and_check "uci set turboacc.config.dns_caching='1'; uci set turboacc.config.dns_caching_dns='1.1.1.1,1.0.0.1'; uci commit turboacc.config" "Setting DNS & Enable BBR"
 execute_and_check "uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq" "Set CPU to maximum frequency"
 uci set cpufreq.cpufreq.minifreq='2208000'; uci commit cpufreq.cpufreq
 uci set dhcp.lan.dhcp_option='6,1.1.1.1,1.0.0.1'; uci commit dhcp.lan
 sleep 3
 
-rm -f /root/tunecpu.sh
+rm -f /root/tunecpu
 echo
 echo -ne "\e[1;32mSuccessful!\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
