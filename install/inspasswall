@@ -1,0 +1,41 @@
+#!/bin/sh
+clear
+echo -e "\e[1;36m=============================================\e[0m"
+echo -e "\e[1;37m     Autoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
+echo -e "\e[1;36m=============================================\e[0m"
+echo
+sleep 2
+
+wget -q -O /root/luci-app-passwall_4.66-8_all.ipk "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall_4.66-8_all.ipk; opkg install *.ipk --force-depends" &> /dev/null
+
+cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
+#!/bin/sh
+
+log () {
+ modlog "$@"
+}
+
+if [ "$ACTION" = "ifup" -a $INTERFACE = wan  -a $(uci -q get passwall.@global[0].enabled) -eq 1 ]; then
+ sleep 10
+ /etc/init.d/passwall restart
+ if [ $? -eq 0 ]; then
+  log "Restart Passwall"
+ else
+  log "failed to restart Passwall"
+ fi
+fi
+done
+EOF
+
+rm -f /root/passwall
+rm -f /root/luci-app-passwall_4.66-8_all.ipk
+echo
+echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+read answer
+if [ "$answer" == "${answer#[Yy]}" ] ;then
+    echo -e "\e[1;31mReboot skipped. Please reboot manually for changes to take effect.\e[0m"
+    exit 0
+else
+    echo -e "\e[1;32mRebooting...\e[0m"
+    reboot
+fi
