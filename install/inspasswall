@@ -18,9 +18,7 @@ execute_install() {
     fi
 }
 
-execute_install "wget -q -O /root/luci-app-passwall_4.66-8_all.ipk "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall_4.66-8_all.ipk"; chmod +x /root/luci-app-passwall_4.66-8_all.ipk; opkg install *.ipk --force-depends" "Installing Passwall. Please wait"
-execute_install "cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "Installing Xray. Please wait"
-execute_install "uci commit" "Set autostart Passwall"
+execute_install "wget -q -O /root/luci-app-passwall.ipk "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall.ipk"; chmod +x /root/luci-app-passwall.ipk; opkg install *.ipk --force-depends; cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "Installing Passwall. Please wait"
 
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
@@ -40,10 +38,9 @@ if [ "$ACTION" = "ifup" -a $INTERFACE = wan  -a $(uci -q get passwall.@global[0]
 fi
 done
 EOF
-sleep 3
+sleep 2
 
-rm -f /root/passwall
-rm -f /root/luci-app-passwall_4.66-8_all.ipk
+rm -f /root/luci-app-passwall.ipk
 echo
 echo -ne "\e[1;32mSuccessful!\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
