@@ -93,7 +93,7 @@ echo f > /sys/class/net/wifi0/queues/rx-0/rps_cpus
 echo f > /sys/class/net/wifi1/queues/rx-0/rps_cpus
 EOF
 
-rm -rf /root/setcpu.sh
+rm -f /root/setcpu.sh
 rm -f /root/luci-app-passwall.ipk
 echo
 echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
