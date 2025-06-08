@@ -22,19 +22,18 @@ execute_install() {
 }
 
 execute_install "opkg update; opkg install htop; opkg install vsftpd" "Update all packages. Please wait"
-opkg --force-removal-of-dependent-packages remove luci-app-openclash luci-app-ipsec-server luci-app-openvpn-server openvpn-openssl openvpn-easy-rsa iperf ppp-mod-pppoe ppp
-wget -q -O /usr/lib/lua/luci/model/cbi/rooter/customize.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/customize.lua
-wget -q -O /usr/lib/lua/luci/model/cbi/rooter/profiles.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/profiles.lua
-wget -q -O /usr/lib/lua/luci/controller/admin/modem.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modem.lua
-wget -q -O /usr/lib/lua/luci/controller/modlog.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.lua
-wget -q -O /usr/lib/lua/luci/controller/sms.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/sms.lua
-wget -q -O /usr/lib/lua/luci/view/rooter/debug.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/debug.htm
-wget -q -O /usr/lib/lua/luci/view/rooter/misc.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/misc.htm
-wget -q -O /usr/lib/lua/luci/view/rooter/custom.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/custom.htm
-wget -q -O /usr/lib/lua/luci/view/rooter/net_status.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/net_status.htm
-wget -q -O /usr/lib/lua/luci/view/rooter/sms.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/sms.htm
-wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.htm
-wget -q -O /usr/bin/speedtest "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/speedtest"; chmod +x /usr/bin/speedtest
+wget -q -O /usr/lib/lua/luci/model/cbi/rooter/customize.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/customize.lua" &> /dev/null
+wget -q -O /usr/lib/lua/luci/model/cbi/rooter/profiles.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/profiles.lua" &> /dev/null
+wget -q -O /usr/lib/lua/luci/controller/admin/modem.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modem.lua" &> /dev/null
+wget -q -O /usr/lib/lua/luci/controller/modlog.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.lua" &> /dev/null
+wget -q -O /usr/lib/lua/luci/controller/sms.lua "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/sms.lua" &> /dev/null
+wget -q -O /usr/lib/lua/luci/view/rooter/debug.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/debug.htm" &> /dev/null
+wget -q -O /usr/lib/lua/luci/view/rooter/misc.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/misc.htm" &> /dev/null
+wget -q -O /usr/lib/lua/luci/view/rooter/custom.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/custom.htm" &> /dev/null
+wget -q -O /usr/lib/lua/luci/view/rooter/net_status.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/net_status.htm" &> /dev/null
+wget -q -O /usr/lib/lua/luci/view/rooter/sms.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/sms.htm" &> /dev/null
+wget -q -O /usr/lib/lua/luci/view/modlog/modlog.htm "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/modlog.htm" &> /dev/null
+wget -q -O /usr/bin/speedtest "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/speedtest"; chmod +x /usr/bin/speedtest" &> /dev/null
 uci set turboacc.config.bbr_cca='1'; uci commit turboacc.config
 uci set cpufreq.cpufreq.governor='performance'; uci commit cpufreq.cpufreq
 uci set cpufreq.cpufreq.minifreq='2208000'; uci commit cpufreq.cpufreq
@@ -64,8 +63,6 @@ if [ "$ACTION" = "ifup" -a $INTERFACE = wan  -a $(uci -q get passwall.@global[0]
 fi
 done
 EOF
-
-rm -f /root/luci-app-passwall.ipk
 
 cat << 'EOF' > /root/setcpu.sh
 #!/bin/sh
@@ -97,8 +94,9 @@ echo f > /sys/class/net/wifi1/queues/rx-0/rps_cpus
 EOF
 
 rm -rf /root/setcpu.sh
+rm -f /root/luci-app-passwall.ipk
 echo
-echo -ne "\e[1;32mSuccessful!\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
+echo -e "\e[1;32mSuccessful!\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
 read answer
 if [ "$answer" == "${answer#[Yy]}" ] ;then
     echo -e "\e[1;31mReboot skipped. Please reboot manually for changes to take effect.\e[0m"
