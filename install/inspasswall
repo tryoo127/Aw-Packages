@@ -6,7 +6,8 @@ echo -e "\e[1;36m=============================================\e[0m"
 echo
 sleep 2
 
-wget -q -O /root/luci-app-passwall_4.66-8_all.ipk "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall_4.66-8_all.ipk; opkg install *.ipk --force-depends" &> /dev/null
+wget -q -O /root/luci-app-passwall_4.66-8_all.ipk "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall_4.66-8_all.ipk
+opkg install *.ipk --force-depends
 
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
@@ -27,7 +28,7 @@ fi
 done
 EOF
 
-rm -f /root/passwall
+rm -f /root/inspasswall
 rm -f /root/luci-app-passwall_4.66-8_all.ipk
 echo
 echo -ne "\e[1;37m[\e[0m \e[1;32mSuccessful!\e[0m \e[1;37m]\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
