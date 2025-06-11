@@ -18,7 +18,7 @@ execute_install() {
     fi
 }
 
-execute_install "wget -q -O /root/luci-app-passwall.ipk "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall.ipk"; chmod +x /root/luci-app-passwall.ipk; opkg install *.ipk --force-depends; cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "Installing Passwall. Please wait"
+execute_install "wget -q -O /root/luci-app-passwall.ipk "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall.ipk"; chmod +x /root/luci-app-passwall.ipk; opkg install *.ipk --force-depends; cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "Installing Passwall. Please wait"
 
 cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
 #!/bin/sh
