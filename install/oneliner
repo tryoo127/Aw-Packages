@@ -21,7 +21,6 @@ execute_install() {
     fi
 }
 
-execute_install "opkg update; opkg install htop; opkg install vsftpd" "Update all packages. Please wait"
 execute_install "uci set luci.main.lang='en'; uci commit" "Setting language to English"
 execute_install "uci set system.@system[0].zonename='Asia/Kuala Lumpur'; uci commit system" "Set timezone to Asia/Kuala Lumpur"
 execute_install "uci -q delete system.ntp.server; uci add_list system.ntp.server='time.cloudflare.com'; uci commit system.ntp; /etc/init.d/sysntpd restart" "Configuring and restarting NTP service"
