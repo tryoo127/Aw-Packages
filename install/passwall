@@ -1,9 +1,10 @@
 #!/bin/sh
+
 IPK_URL="https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall.ipk"
 IPK_FILE="/tmp/luci-app-passwall.ipk"
 
 echo "======================================"
-echo "   INSTALL PASSWALL QWRT AW1000"
+echo "   QWRT PASSWALL + XRAY INSTALLER"
 echo "======================================"
 echo
 
@@ -12,47 +13,84 @@ fail() {
     exit 1
 }
 
-echo "[1/8] Stop & disable services..."
-/etc/init.d/passwall stop 2>/dev/null
-/etc/init.d/xray stop 2>/dev/null
-/etc/init.d/passwall disable 2>/dev/null
-/etc/init.d/xray disable 2>/dev/null
+need_cmd() {
+    command -v "$1" >/dev/null 2>&1 || fail "Required command not found: $1"
+}
+
+need_cmd opkg
+need_cmd wget
+need_cmd awk
+
+[ "$(id -u)" = "0" ] || fail "Please run as root"
+
+echo "[1/8] Checking free space..."
+FREE_KB="$(df /overlay 2>/dev/null | awk 'NR==2 {print $4}')"
+[ -n "$FREE_KB" ] || FREE_KB="$(df / 2>/dev/null | awk 'NR==2 {print $4}')"
+[ -n "$FREE_KB" ] || fail "Unable to detect free space"
+
+FREE_MB="$(awk "BEGIN {printf \"%.1f\", ${FREE_KB}/1024}")"
+echo "Free space: ${FREE_MB} MB"
+
+# Soft warning only
+if [ "$FREE_KB" -lt 8192 ]; then
+    echo "WARNING: Very low storage (<8MB). Install may fail."
+fi
 
 echo
-echo "[2/8] Remove old packages..."
-opkg remove luci-app-passwall luci-i18n-passwall-zh-cn luci-i18n-passwall-en xray-core 2>/dev/null
-
-echo
-echo "[3/8] Clean leftover files..."
-rm -rf /etc/config/passwall
-rm -rf /etc/passwall
-rm -rf /usr/share/passwall
-rm -rf /var/etc/passwall
-
-echo
-echo "[4/8] Update package list..."
+echo "[2/8] Updating package list..."
 opkg update || fail "opkg update failed"
 
 echo
-echo "[5/8] Download Passwall..."
+echo "[3/8] Downloading Passwall IPK..."
 rm -f "$IPK_FILE"
-wget -O "$IPK_FILE" "$IPK_URL" || fail "Download failed"
+wget -O "$IPK_FILE" "$IPK_URL" || fail "Failed to download Passwall IPK from GitHub"
+
+[ -f "$IPK_FILE" ] || fail "Downloaded IPK not found"
+IPK_SIZE_KB="$(du -k "$IPK_FILE" | awk '{print $1}')"
+IPK_SIZE_MB="$(awk "BEGIN {printf \"%.1f\", ${IPK_SIZE_KB}/1024}")"
+echo "Downloaded: ${IPK_SIZE_MB} MB"
 
 echo
-echo "[6/8] Install Passwall GUI..."
-opkg install "$IPK_FILE" || fail "Install GUI failed"
+echo "[4/8] Installing Passwall GUI..."
+opkg install "$IPK_FILE" || fail "Passwall GUI install failed"
 
 echo
-echo "[7/8] Install Xray core..."
-opkg install xray-core || fail "Install xray failed"
+echo "[5/8] Installing Xray core..."
+opkg install xray-core || fail "xray-core install failed"
 
 echo
-echo "[8/8] Restart LuCI..."
-/etc/init.d/uhttpd restart 2>/dev/null
+echo "[6/8] Restarting LuCI..."
+/etc/init.d/uhttpd restart 2>/dev/null || true
 
+echo
+echo "[7/8] Cleaning temporary files..."
 rm -f "$IPK_FILE"
 
-opkg list-installed | grep -E 'passwall|xray' || echo "Not detected"
+echo
+echo "[8/8] Final status..."
+PW_OK=0
+XRAY_OK=0
+
+opkg list-installed | grep -q '^luci-app-passwall ' && PW_OK=1
+opkg list-installed | grep -q '^xray-core ' && XRAY_OK=1
+
+if [ "$PW_OK" = "1" ]; then
+    echo "[OK] Passwall GUI installed"
+else
+    echo "[WARN] Passwall GUI not detected"
+fi
+
+if [ "$XRAY_OK" = "1" ]; then
+    echo "[OK] xray-core installed"
+else
+    echo "[WARN] xray-core not detected"
+fi
+
+if command -v xray >/dev/null 2>&1; then
+    echo "[OK] Xray binary: $(command -v xray)"
+else
+    echo "[WARN] Xray binary not found in PATH"
+fi
 
 echo
 echo "Log in QWRT WebUI:"
