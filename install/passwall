@@ -20,7 +20,7 @@ echo "[1/8] Stop & disable services..."
 
 echo
 echo "[2/8] Remove old packages..."
-opkg remove luci-app-passwall xray-core 2>/dev/null
+opkg remove luci-app-passwall luci-i18n-passwall-zh-cn luci-i18n-passwall-en xray-core 2>/dev/null
 
 echo
 echo "[3/8] Clean leftover files..."
@@ -55,10 +55,9 @@ rm -f "$IPK_FILE"
 echo
 echo "=== FINAL STATUS ==="
 opkg list-installed | grep -E 'passwall|xray' || echo "Not detected"
-rm -f /root/passwall
 
 echo
-echo "Log in QWRT WebUI :"
+echo "Log in QWRT WebUI:"
 echo "Go to -> Services -> Passwall"
 sleep 2
 echo
