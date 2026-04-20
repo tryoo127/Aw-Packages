@@ -52,8 +52,6 @@ echo "[8/8] Restart LuCI..."
 
 rm -f "$IPK_FILE"
 
-echo
-echo "=== FINAL STATUS ==="
 opkg list-installed | grep -E 'passwall|xray' || echo "Not detected"
 
 echo
