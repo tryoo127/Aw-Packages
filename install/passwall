@@ -3,7 +3,7 @@ IPK_URL="https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci
 IPK_FILE="/tmp/luci-app-passwall.ipk"
 
 echo "======================================"
-echo "   PASSWALL FULL RESET + INSTALL"
+echo "   INSTALL PASSWALL QWRT AW1000"
 echo "======================================"
 echo
 
