@@ -1,53 +1,100 @@
 #!/bin/sh
+BASE_URL="https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system"
+IPK_URL="${BASE_URL}/luci-app-passwall.ipk"
+IPK_FILE="/tmp/luci-app-passwall.ipk"
+
 clear
-echo -e "\e[1;36m======================================\e[0m"
-echo -e "\e[1;37m Autoscript Passwall QWRT By \e[1;32m@XoolVPN\e[0m"
-echo -e "\e[1;36m======================================\e[0m"
+echo "======================================"
+echo "   QWRT PASSWALL + XRAY INSTALLER"
+echo "======================================"
 echo
-sleep 2
 
-execute_install() {
-    local cmd="$1"
-    local message="$2"
-    echo -n -e "\e[0;37m$message...\e[0m"
-    eval "$cmd" > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        echo -e "\r\e[0;37m$message...\e[0m\e[1;32mDone!\e[0m"
-    else
-        echo -e "\r\e[1;31m$message...Failed!\e[0m"
-    fi
+fail() {
+    echo "ERROR: $1"
+    exit 1
 }
 
-execute_install "wget -q -O /root/luci-app-passwall.ipk "https://raw.githubusercontent.com/tryoo127/Aw-Packages/main/system/luci-app-passwall.ipk"; chmod +x /root/luci-app-passwall.ipk; opkg install *.ipk --force-depends; cd /tmp;curl -L https://github.com/mssvpn/Xray-core/releases/download/v1.7.2.1/Xray-linux-arm64-v8a.zip > Xray-linux-arm64-v8a.zip && unzip *.zip && mv xray /usr/bin && chmod +x /usr/bin/xray" "Installing Passwall. Please wait"
-
-cat << 'EOF' > /etc/hotplug.d/iface/99-passwall
-#!/bin/sh
-
-log () {
- modlog "$@"
+need_cmd() {
+    command -v "$1" >/dev/null 2>&1 || fail "Required command not found: $1"
 }
 
-if [ "$ACTION" = "ifup" -a $INTERFACE = wan  -a $(uci -q get passwall.@global[0].enabled) -eq 1 ]; then
- sleep 10
- /etc/init.d/passwall restart
- if [ $? -eq 0 ]; then
-  log "Restart Passwall"
- else
-  log "failed to restart Passwall"
- fi
+need_cmd opkg
+need_cmd wget
+need_cmd awk
+
+[ "$(id -u)" = "0" ] || fail "Please run as root"
+
+echo "[1/8] Checking free space..."
+FREE_KB="$(df /overlay 2>/dev/null | awk 'NR==2 {print $4}')"
+[ -n "$FREE_KB" ] || FREE_KB="$(df / 2>/dev/null | awk 'NR==2 {print $4}')"
+[ -n "$FREE_KB" ] || fail "Unable to detect free space"
+
+FREE_MB="$(awk "BEGIN {printf \"%.1f\", ${FREE_KB}/1024}")"
+echo "Free space: ${FREE_MB} MB"
+
+# Soft warning only
+if [ "$FREE_KB" -lt 8192 ]; then
+    echo "WARNING: Very low storage (<8MB). Install may fail."
 fi
-done
-EOF
-sleep 2
 
-rm -f /root/luci-app-passwall.ipk
 echo
-echo -ne "\e[1;32mSuccessful!\e[0m \e[0;37mReboot Now? (y/n)? : \e[0m"
-read answer
-if [ "$answer" == "${answer#[Yy]}" ] ;then
-    echo -e "\e[1;31mReboot skipped. Please Login QWRT web-ui and reload the page.\e[0m"
-    exit 0
+echo "[2/8] Updating package list..."
+opkg update || fail "opkg update failed"
+
+echo
+echo "[3/8] Downloading Passwall IPK..."
+rm -f "$IPK_FILE"
+wget -O "$IPK_FILE" "$IPK_URL" || fail "Failed to download Passwall IPK from GitHub"
+
+[ -f "$IPK_FILE" ] || fail "Downloaded IPK not found"
+IPK_SIZE_KB="$(du -k "$IPK_FILE" | awk '{print $1}')"
+IPK_SIZE_MB="$(awk "BEGIN {printf \"%.1f\", ${IPK_SIZE_KB}/1024}")"
+echo "Downloaded: ${IPK_SIZE_MB} MB"
+
+echo
+echo "[4/8] Installing Passwall GUI..."
+opkg install "$IPK_FILE" || fail "Passwall GUI install failed"
+
+echo
+echo "[5/8] Installing Xray core..."
+opkg install xray-core || fail "xray-core install failed"
+
+echo
+echo "[6/8] Restarting LuCI..."
+/etc/init.d/uhttpd restart 2>/dev/null || true
+
+echo
+echo "[7/8] Cleaning temporary files..."
+rm -f "$IPK_FILE"
+
+echo
+echo "[8/8] Final status..."
+PW_OK=0
+XRAY_OK=0
+
+opkg list-installed | grep -q '^luci-app-passwall ' && PW_OK=1
+opkg list-installed | grep -q '^xray-core ' && XRAY_OK=1
+
+if [ "$PW_OK" = "1" ]; then
+    echo "[OK] Passwall GUI installed"
 else
-    echo -e "\e[1;32mRebooting...\e[0m"
-    reboot
+    echo "[WARN] Passwall GUI not detected"
 fi
+
+if [ "$XRAY_OK" = "1" ]; then
+    echo "[OK] xray-core installed"
+else
+    echo "[WARN] xray-core not detected"
+fi
+
+if command -v xray >/dev/null 2>&1; then
+    echo "[OK] Xray binary: $(command -v xray)"
+else
+    echo "[WARN] Xray binary not found in PATH"
+fi
+
+echo
+echo "Log in QWRT WebUI :"
+echo "Go to -> Services -> Passwall"
+echo
+echo "Done."
